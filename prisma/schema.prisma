@@ -34,7 +34,7 @@ model UserToken {
 model Movies {
   id          String   @id @default(uuid())
   user        User     @relation(fields: [userId], references: [id])
-  userId      String   @unique
+  userId      String
   title       String   @db.VarChar(255)
   publishYear Int
   imageUrl    String   @db.VarChar(500)

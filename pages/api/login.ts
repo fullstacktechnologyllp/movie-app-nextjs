@@ -3,7 +3,7 @@ import { userService } from '../../shared/services/users';
 import { userTokensService } from '../../shared/services/userTokens';
 import { ERROR_RESPONSES } from '../../shared/constants';
 import { utilService } from '../../shared/services/utils';
-import { setUserCookie } from '../../lib/auth';
+import { setUserToken } from '../../lib/auth';
 
 type ResponseData = {
     message: string;
@@ -32,7 +32,7 @@ const login = async (req: NextApiRequest, res: NextApiResponse) => {
         return res.status(400).json({ message: ERROR_RESPONSES.INVALID_PASSWORD });
     }
 
-    const token = await setUserCookie();
+    const token = await setUserToken();
 
     await userTokensService.saveToken(user.id, token);
     return res.status(200).json({ token });

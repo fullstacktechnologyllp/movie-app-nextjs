@@ -36,7 +36,7 @@ export async function verifyAuth(req: NextRequest) {
 /**
  * Adds the user token to a response.
  */
-export async function setUserCookie() {
+export async function setUserToken() {
     const token = await new SignJWT({})
         .setProtectedHeader({ alg: 'HS256' })
         .setJti(nanoid())

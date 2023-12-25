@@ -14,6 +14,10 @@ class PrismaService {
     userToken() {
         return this.prismaClient.userToken;
     }
+
+    movie() {
+        return this.prismaClient.movies;
+    }
 }
 
 export const prismaService = new PrismaService();
