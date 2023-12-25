@@ -10,6 +10,10 @@ class PrismaService {
     user() {
         return this.prismaClient.user;
     }
+
+    userToken() {
+        return this.prismaClient.userToken;
+    }
 }
 
 export const prismaService = new PrismaService();

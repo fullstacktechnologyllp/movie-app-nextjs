@@ -1,12 +1,20 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { userService } from '../../shared/services/users';
+import { userTokensService } from '../../shared/services/userTokens';
 import { ERROR_RESPONSES } from '../../shared/constants';
 import { utilService } from '../../shared/services/utils';
+import { setUserCookie } from '../../lib/auth';
 
 type ResponseData = {
     message: string;
 };
 
+/**
+ * User login
+ * @param req 
+ * @param res 
+ * @returns 
+ */
 const login = async (req: NextApiRequest, res: NextApiResponse) => {
     const { email, password } = req.body;
 
@@ -24,7 +32,10 @@ const login = async (req: NextApiRequest, res: NextApiResponse) => {
         return res.status(400).json({ message: ERROR_RESPONSES.INVALID_PASSWORD });
     }
 
-    return res.status(200).json({ user });
+    const token = await setUserCookie();
+
+    await userTokensService.saveToken(user.id, token);
+    return res.status(200).json({ token });
 };
 
 const handler = async (
