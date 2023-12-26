@@ -77,8 +77,10 @@ const update = async (req: any, res: any) => {
         throw new ErrorHandler(400, ERROR_RESPONSES.MOVIE_PUBLISH_YEAR_IS_REQUIRED);
     }
 
-    const s3ObjectName = `${userId}_${title}.png`;
+    let s3ObjectName = movie.imageUrl;
     if (fileName) {
+        const ext = fileName.substring(fileName.indexOf('.') + 1);
+        s3ObjectName = `${userId}_${title}.${ext}`;
         await s3Service.upload({
             fileName: s3ObjectName,
             file: req.files[0].buffer,

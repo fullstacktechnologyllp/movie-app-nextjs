@@ -62,7 +62,8 @@ const create = async (req: any, res: any) => {
     }
 
     const movieId = v4();
-    const s3ObjectName = `${userId}_${movieId}.png`;
+    const ext = fileName.substring(fileName.indexOf('.') + 1);
+    const s3ObjectName = `${userId}_${movieId}.${ext}`;
 
     await s3Service.upload({
         fileName: s3ObjectName,
