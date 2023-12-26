@@ -1,4 +1,5 @@
 
+import { IUser } from '../dtos';
 import { USERS } from '../seeds/users';
 import { prismaService } from './index';
 import { utilService } from './utils';
@@ -9,42 +10,30 @@ class UsersService {
      * @returns 
      */
     async seed() {
-        const userSeed: {
-            id: string;
-            name: string;
-            password: string;
-            email: string;
-        }[] = [];
+        try {
+            const userSeed: IUser[] = [];
 
-        for await (const user of USERS) {
-            const isAlreadySeeded = await this.findOneById(user.id);
+            for await (const user of USERS) {
+                const isAlreadySeeded = await this.findOneById(user.id);
 
-            if (!isAlreadySeeded) {
-                user.password = utilService.encodePassword(user.password);
-                userSeed.push(user);
+                if (!isAlreadySeeded) {
+                    user.password = utilService.encodePassword(user.password);
+                    userSeed.push(user);
+                }
             }
+
+            if (userSeed.length) {
+                await prismaService.user().createMany({
+                    data: userSeed
+                });
+            }
+
+            return true;
+        } catch (error) {
+            console.error('[UsersService]:[update]', error);
+            throw error;
         }
 
-        if (userSeed.length) {
-            await prismaService.user().createMany({
-                data: userSeed
-            });
-        }
-
-        return true;
-    }
-
-    /**
-     * Get all users
-     * @returns 
-     */
-    async get() {
-        const allUsers = await prismaService.user().findMany();
-        const allUsersCount = await prismaService.user().count();
-        return {
-            allUsers,
-            allUsersCount
-        };
     }
 
     /**
@@ -61,7 +50,7 @@ class UsersService {
             });
             return user;
         } catch (error) {
-            console.error(error);
+            console.error('[UsersService]:[findOneByEmail]', error);
             throw error;
         }
     }
@@ -80,7 +69,7 @@ class UsersService {
             });
             return user;
         } catch (error) {
-            console.error(error);
+            console.error('[UsersService]:[findOneById]', error);
             throw error;
         }
     }

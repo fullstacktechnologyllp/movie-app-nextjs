@@ -17,16 +17,21 @@ class S3Service {
     }
   }
 
+  /**
+   * Upload file to s3 storage
+   * @param params 
+   */
   async upload(params: { fileName: string; file: Buffer; }) {
     try {
       await this.client?.putObject({
         Bucket: AWS_CREDS.BUCKET_NAME,
         Key: params.fileName,
         Body: params.file,
-        // ACL: 'public-read-write'
+        ACL: 'public-read'
       });
     } catch (error) {
       console.error('[S3Service]:[upload]', error);
+      throw error;
     }
   }
 }

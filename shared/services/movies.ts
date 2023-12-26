@@ -1,12 +1,6 @@
 
+import { IMovie } from '../dtos';
 import { prismaService } from './index';
-
-interface IMovie {
-    title: string;
-    imageUrl: string;
-    publishYear: number;
-    userId: string;
-}
 
 class MoviesService {
     async create(moviePayload: IMovie) {
@@ -15,7 +9,7 @@ class MoviesService {
                 data: moviePayload,
             });
         } catch (error) {
-            console.error(error);
+            console.error('[MoviesService]:[create]', error);
             throw error;
         }
     }
@@ -28,7 +22,7 @@ class MoviesService {
                 }
             });
         } catch (error) {
-            console.error(error);
+            console.error('[MoviesService]:[findOne]', error);
             throw error;
         }
     }
@@ -40,7 +34,10 @@ class MoviesService {
                     userId: userId
                 },
                 skip,
-                take
+                take,
+                orderBy: [{
+                    createdAt: 'desc'
+                }]
             });
 
             const count = await prismaService.movie().count({
@@ -54,7 +51,7 @@ class MoviesService {
                 count
             };
         } catch (error) {
-            console.error(error);
+            console.error('[MoviesService]:[find]', error);
             throw error;
         }
     }
@@ -66,7 +63,7 @@ class MoviesService {
                 where: { id }
             });
         } catch (error) {
-            console.error(error);
+            console.error('[MoviesService]:[update]', error);
             throw error;
         }
     }

@@ -3,11 +3,7 @@ import { userService } from '../../shared/services/users';
 import { userTokensService } from '../../shared/services/userTokens';
 import { ERROR_RESPONSES } from '../../shared/constants';
 import { utilService } from '../../shared/services/utils';
-import { setUserToken } from '../../lib/auth';
-
-type ResponseData = {
-    message: string;
-};
+import { ErrorHandler, setUserToken } from '../../lib/auth';
 
 /**
  * User login
@@ -19,17 +15,17 @@ const login = async (req: NextApiRequest, res: NextApiResponse) => {
     const { email, password } = req.body;
 
     if (!email) {
-        return res.status(400).json({ message: ERROR_RESPONSES.EMAIL_IS_REQUIRED });
+        throw new ErrorHandler(400, ERROR_RESPONSES.EMAIL_IS_REQUIRED);
     } else if (!password) {
-        return res.status(400).json({ message: ERROR_RESPONSES.PASSWORD_IS_REQUIRED });
+        throw new ErrorHandler(400, ERROR_RESPONSES.PASSWORD_IS_REQUIRED);
     }
 
     const user = await userService.findOneByEmail(req.body.email);
 
     if (!user) {
-        return res.status(404).json({ message: ERROR_RESPONSES.USER_NOT_FOUND });
+        throw new ErrorHandler(404, ERROR_RESPONSES.USER_NOT_FOUND);
     } else if (!utilService.isPasswordValid(password, user.password)) {
-        return res.status(400).json({ message: ERROR_RESPONSES.INVALID_PASSWORD });
+        throw new ErrorHandler(400, ERROR_RESPONSES.INVALID_PASSWORD);
     }
 
     const token = await setUserToken(user.id);
@@ -40,15 +36,19 @@ const login = async (req: NextApiRequest, res: NextApiResponse) => {
 
 const handler = async (
     req: NextApiRequest,
-    res: NextApiResponse<ResponseData>
+    res: NextApiResponse
 ) => {
     try {
-        const { method, query } = req;
+        const { method } = req;
 
         if (method === 'POST') {
             await login(req, res);
         }
     } catch (error) {
+        if (error instanceof ErrorHandler) {
+            return res.status(error.statusCode).json({ message: error.message });
+        }
+
         console.error(error);
         res.status(500).json({ message: ERROR_RESPONSES.PLEASE_TRY_AGAIN });
     }
