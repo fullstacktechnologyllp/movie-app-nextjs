@@ -1,11 +1,10 @@
-import type { NextRequest, NextResponse } from 'next/server';
-import { nanoid } from 'nanoid';
-import { SignJWT, jwtVerify } from 'jose';
-import { getJwtSecretKey } from '../shared/constants';
-import _ from 'lodash';
+import type { NextRequest } from 'next/server';
+import { SignJWT, decodeJwt, jwtVerify } from 'jose';
+import { ERROR_RESPONSES, getJwtSecretKey } from '../shared/constants';
+import { NextApiRequest } from 'next';
 
 interface UserJwtPayload {
-    jti: string;
+    userId: string;
     iat: number;
 }
 
@@ -14,34 +13,56 @@ export class AuthError extends Error { }
 /**
  * Verifies the user's JWT token and returns its payload if it's valid.
  */
-export async function verifyAuth(req: NextRequest) {
+export async function verifyAuth(req: NextRequest): Promise<Partial<UserJwtPayload>> {
     const bearerToken = req.headers.get('authorization');
 
-    if (!bearerToken || _.isEmpty(bearerToken) || _.isEmpty(_.split(bearerToken, ' ', 2)[1])) {
-        throw new AuthError('Missing user token');
+    if (!bearerToken || !bearerToken.split(' ', 2)[1]) {
+        throw ERROR_RESPONSES.AUTH_TOKEN_IS_REQUIRED;
     }
+
+    const token = bearerToken.split(' ', 2)[1];
 
     try {
         const verified = await jwtVerify(
-            bearerToken,
+            token,
             new TextEncoder().encode(getJwtSecretKey())
         );
-        return verified.payload as UserJwtPayload;
+        console.log(verified);
+        return verified.payload;
     } catch (err) {
-        console.error(err)
-        throw new AuthError('Your token has expired.');
+        throw ERROR_RESPONSES.AUTH_TOKEN_IS_EXPIRED;
+    }
+}
+
+/**
+ * decode the user's JWT token
+ */
+export async function decode(req: NextApiRequest) {
+    const bearerToken = req.headers.authorization;
+
+    if (!bearerToken || !bearerToken.split(' ', 2)[1]) {
+        throw ERROR_RESPONSES.AUTH_TOKEN_IS_REQUIRED;
+    }
+
+    const token = bearerToken.split(' ', 2)[1];
+
+    try {
+        const verified = await decodeJwt(token);
+        return verified;
+    } catch (err) {
+        console.error(err);
+        throw ERROR_RESPONSES.AUTH_TOKEN_IS_EXPIRED;
     }
 }
 
 /**
  * Adds the user token to a response.
  */
-export async function setUserToken() {
-    const token = await new SignJWT({})
+export async function setUserToken(userId: string) {
+    const token = await new SignJWT({ userId })
         .setProtectedHeader({ alg: 'HS256' })
-        .setJti(nanoid())
         .setIssuedAt()
-        .setExpirationTime('2h')
+        .setExpirationTime('1d')
         .sign(new TextEncoder().encode(getJwtSecretKey()));
 
     return token;

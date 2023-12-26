@@ -57,6 +57,25 @@ class UsersService {
             throw error;
         }
     }
+
+    /**
+     * Find user by id
+     * @param id 
+     * @returns 
+     */
+    async findOneById(id: string) {
+        try {
+            const user = await prismaService.user().findFirst({
+                where: {
+                    id
+                }
+            });
+            return user;
+        } catch (error) {
+            console.error(error);
+            throw error;
+        }
+    }
 }
 
 export const userService = new UsersService();

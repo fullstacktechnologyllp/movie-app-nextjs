@@ -32,7 +32,7 @@ const login = async (req: NextApiRequest, res: NextApiResponse) => {
         return res.status(400).json({ message: ERROR_RESPONSES.INVALID_PASSWORD });
     }
 
-    const token = await setUserToken();
+    const token = await setUserToken(user.id);
 
     await userTokensService.saveToken(user.id, token);
     return res.status(200).json({ token });
