@@ -1,7 +1,6 @@
 import type { NextRequest } from 'next/server';
 import { SignJWT, decodeJwt, jwtVerify } from 'jose';
 import { ERROR_RESPONSES, getJwtSecretKey } from '../shared/constants';
-import _ from 'lodash';
 import { NextApiRequest } from 'next';
 
 interface UserJwtPayload {
@@ -17,18 +16,18 @@ export class AuthError extends Error { }
 export async function verifyAuth(req: NextRequest): Promise<Partial<UserJwtPayload>> {
     const bearerToken = req.headers.get('authorization');
 
-    if (!bearerToken || _.isEmpty(bearerToken) || _.isEmpty(_.split(bearerToken, ' ', 2)[1])) {
+    if (!bearerToken || !bearerToken.split(' ', 2)[1]) {
         throw ERROR_RESPONSES.AUTH_TOKEN_IS_REQUIRED;
     }
 
-    const token = _.split(bearerToken, ' ', 2)[1];
+    const token = bearerToken.split(' ', 2)[1];
 
     try {
         const verified = await jwtVerify(
             token,
             new TextEncoder().encode(getJwtSecretKey())
         );
-        console.log(verified)
+        console.log(verified);
         return verified.payload;
     } catch (err) {
         throw ERROR_RESPONSES.AUTH_TOKEN_IS_EXPIRED;
@@ -41,18 +40,17 @@ export async function verifyAuth(req: NextRequest): Promise<Partial<UserJwtPaylo
 export async function decode(req: NextApiRequest) {
     const bearerToken = req.headers.authorization;
 
-
-    if (!bearerToken || _.isEmpty(bearerToken) || _.isEmpty(_.split(bearerToken, ' ', 2)[1])) {
+    if (!bearerToken || !bearerToken.split(' ', 2)[1]) {
         throw ERROR_RESPONSES.AUTH_TOKEN_IS_REQUIRED;
     }
 
-    const token = _.split(bearerToken, ' ', 2)[1];
+    const token = bearerToken.split(' ', 2)[1];
 
     try {
         const verified = await decodeJwt(token);
         return verified;
     } catch (err) {
-        console.error(err)
+        console.error(err);
         throw ERROR_RESPONSES.AUTH_TOKEN_IS_EXPIRED;
     }
 }
