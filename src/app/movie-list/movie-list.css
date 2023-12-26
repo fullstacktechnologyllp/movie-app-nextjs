@@ -1,3 +1,25 @@
-.custom-pagination{
-  
+.custom-pagination .page-item{
+  padding: 0px 5px; 
+}
+.custom-pagination .page-item a{
+  background-color: #092C39 !important;
+  border: unset;
+  color: #fff;
+  font-family: Montserrat !important;
+  font-size: 16px !important;
+  font-weight: 700 !important;
+  line-height: 24px !important;
+  letter-spacing: 0em !important;
+  border-radius: 4px;
+  padding: 10px 15px;
+}
+
+.custom-pagination .page-item:first-child a,
+.custom-pagination .page-item:last-child a {
+  background-color: unset !important;
+}
+
+.custom-pagination .page-item.active a {
+  background-color: #2BD17E !important;
+  color: #fff !important;
 }
