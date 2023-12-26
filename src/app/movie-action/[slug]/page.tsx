@@ -7,9 +7,11 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import './movie-action.css';
 import fileDownload from '../../../assets/images/file_download.svg';
+import { useRouter } from 'next/navigation';
 
-export default function MovieForm({ params }: any) {
-  console.log(params)
+export default function MovieForm({ props }: any) {
+  console.log(props);
+  const router = useRouter();
   const fileInputStyles: React.CSSProperties = {
     position: 'absolute',
     width: '100%',
@@ -84,7 +86,7 @@ export default function MovieForm({ params }: any) {
                 />
               </Form.Group>
               <div className="mb-2">
-                <Button variant="primary" className='me-lg-3 btn btn-md regular-body btn-transparent'>
+                <Button variant="primary" onClick={()=>router.push('/movies')} className='me-lg-3 btn btn-md regular-body btn-transparent'>
                   Cancel
                 </Button>{ ' ' }
                 <Button className='btn-primary-custom btn btn-md regular-body'>

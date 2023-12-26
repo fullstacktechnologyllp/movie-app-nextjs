@@ -21,9 +21,9 @@ export default function RootLayout({
       <body className={montserrat.className}><div
       style={ {
         backgroundImage: `url(${signinImage.src})`,
-        backgroundSize: 'cover',
-        height: '100vh',
-    
+        backgroundSize: 'contain',
+        height: '100%',
+        backgroundColor: '#083544',
         backgroundRepeat: 'no-repeat',
         backgroundPositionY: 'bottom',
       } }

@@ -1,6 +1,5 @@
 import React from 'react';
 import { Form, Button, Container, Row, Col } from 'react-bootstrap';
-import signinImage from '../../assets/images/sign-in.jpg';
 import { useRouter } from 'next/navigation';
 
 export default function Signin() {
@@ -35,7 +34,7 @@ export default function Signin() {
                 <Form.Check type="checkbox" label="Remember me" />
               </Form.Group>
 
-              <Button onClick={ () => navigateLink('/dashboard') } variant="primary" type="button" className='w-100 btn-primary-custom regular-body' size='lg'>
+              <Button onClick={ () => navigateLink('/movies') } variant="primary" type="button" className='w-100 btn-primary-custom regular-body' size='lg'>
                 Login
               </Button>
             </Form>
