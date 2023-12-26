@@ -263,6 +263,6 @@ h6 {
   height: 45px;
 }
 
-.form-control::placeholder {
+.form-control::placeholder, .form-control:focus, .form-control:active {
   color: #fff !important;
 }

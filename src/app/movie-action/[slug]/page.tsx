@@ -6,6 +6,7 @@ import Image from 'next/image';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import './movie-action.css';
+import fileDownload from '../../../assets/images/file_download.svg';
 
 export default function MovieForm({ params }: any) {
   console.log(params)
@@ -18,13 +19,14 @@ export default function MovieForm({ params }: any) {
     opacity: 0,
     cursor: 'pointer',
   };
-
   const previewStyles: React.CSSProperties = {
     width: '100%',
     height: '100%',
     objectFit: 'contain',
   };
-  const [ previewUrl, setPreviewUrl ]:any = useState<string | ArrayBuffer | null>('');
+
+  const [ previewUrl, setPreviewUrl ]: any = useState<string | ArrayBuffer | null>('');
+  const [ selectedYear, setSelectedYear ] = useState<Date | null>(null);
 
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files && e.target.files[ 0 ];
@@ -54,14 +56,14 @@ export default function MovieForm({ params }: any) {
                 accept="image/*"
               />
               { previewUrl && (
-                // eslint-disable-next-line @next/next/no-img-element
-                <Image src={ previewUrl } alt="Preview" layout="fill" objectFit="cover" style={previewStyles}/>
+                <Image src={ previewUrl } alt="Preview" layout="fill" objectFit="cover" style={ previewStyles } />
               ) }
-              { !previewUrl && (
-                <div className="position-absolute top-50 start-50 translate-middle text-center">
+              { !previewUrl && (<>
+                <div className="position-absolute top-50 start-50 translate-middle text-center d-grid small-body">
+                <Image src={ fileDownload } alt='file-upload' className='m-auto mb-2'/>
                   Drop an image here
                 </div>
-              ) }
+              </>) }
             </div>
           </Col>
           <Col md={ 1 }>
@@ -71,8 +73,15 @@ export default function MovieForm({ params }: any) {
               <Form.Group controlId="movieName">
                 <Form.Control type="text" placeholder="Title" className='mb-3 w-75  custom-input' />
               </Form.Group>
-              <Form.Group controlId="publishYear" >
-                <Form.Control type="text" placeholder="Publishing year" className='w-50 mb-5' />
+              <Form.Group controlId="publishYear" className='mb-5'>
+                <DatePicker
+                  selected={ selectedYear }
+                  onChange={ (date: Date | null) => setSelectedYear(date) }
+                  className="form-control"
+                  dateFormat="yyyy"
+                  showYearPicker
+                  placeholderText="Publishing year"
+                />
               </Form.Group>
               <div className="mb-2">
                 <Button variant="primary" className='me-lg-3 btn btn-md regular-body btn-transparent'>
