@@ -1,21 +1,21 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 
 type ResponseData = {
-    message: string;
+    version: string;
 };
 
 /**
  * @swagger
- * /api/hello:
+ * /api/version:
  *   get:
- *     description: Returns the hello world
+ *     description: Returns the app version
  *     responses:
  *       200:
- *         description: Hello World!
+ *         description: { 'version': '1.0.0' }
  */
 export default function handler(
     req: NextApiRequest,
     res: NextApiResponse<ResponseData>
 ) {
-    res.status(200).json({ message: 'Hello World!' });
+    res.status(200).json({ version: '1.0.0' });
 }
