@@ -43,6 +43,8 @@ export const config = {
  *     responses:
  *       201:
  *         description: MOVIE_UPDATED
+ *     tags:
+ *       - movies
  */
 const update = async (req: any, res: any) => {
     const { id } = req.query;
@@ -112,6 +114,8 @@ const update = async (req: any, res: any) => {
  *     responses:
  *       200:
  *         description: Movie
+ *     tags:
+ *       - movies
  */
 const getById = async (req: Request, res: NextApiResponse) => {
     const { id } = req.query;
