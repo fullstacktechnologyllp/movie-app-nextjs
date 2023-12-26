@@ -8,7 +8,7 @@ import { ErrorHandler, setUserToken } from '../../lib/auth';
 /**
  * @swagger
  * /api/login:
- *   put:
+ *   post:
  *     description: User login
  *     parameters:
  *      - in: formData

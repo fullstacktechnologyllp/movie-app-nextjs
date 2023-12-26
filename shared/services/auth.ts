@@ -5,7 +5,14 @@ import { userService } from './users';
 
 class AuthService {
     async authenticate(req: NextApiRequest) {
-        const payload = await decode(req);
+        const bearerToken = req.headers.authorization;
+        const token = bearerToken?.split(' ', 2)[1];
+
+        if (!bearerToken || !bearerToken.split(' ', 2)[1] || !token) {
+            throw new ErrorHandler(403, ERROR_RESPONSES.AUTH_TOKEN_IS_REQUIRED);
+        }
+
+        const payload = decode(token);
 
         const userId = payload['userId'] as string;
 
