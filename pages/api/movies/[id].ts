@@ -134,10 +134,10 @@ const handler = async (
     try {
         const { method, query } = req;
 
-        if (method === 'POST') {
-            await create(req, res);
-        } else if (method === 'GET' && query.skip && query.take) {
-            await get(req, res);
+        if (method === 'PUT' && query.id) {
+            await update(req, res);
+        } else if (method === 'GET' && query.id) {
+            await getById(req, res);
         }
     } catch (error) {
         console.error(error);
