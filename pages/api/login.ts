@@ -6,10 +6,24 @@ import { utilService } from '../../shared/services/utils';
 import { ErrorHandler, setUserToken } from '../../lib/auth';
 
 /**
- * User login
- * @param req 
- * @param res 
- * @returns 
+ * @swagger
+ * /api/login:
+ *   post:
+ *     description: User login
+ *     parameters:
+ *      - in: formData
+ *        name: email
+ *        required: true
+ *        schema:
+ *        type: string
+ *      - in: formData
+ *        name: password
+ *        required: true
+ *        schema:
+ *         type: string
+ *     responses:
+ *       200:
+ *         description: User token
  */
 const login = async (req: NextApiRequest, res: NextApiResponse) => {
     const { email, password } = req.body;
@@ -20,7 +34,7 @@ const login = async (req: NextApiRequest, res: NextApiResponse) => {
         throw new ErrorHandler(400, ERROR_RESPONSES.PASSWORD_IS_REQUIRED);
     }
 
-    const user = await userService.findOneByEmail(req.body.email);
+    const user = await userService.findOneByEmail(email);
 
     if (!user) {
         throw new ErrorHandler(404, ERROR_RESPONSES.USER_NOT_FOUND);

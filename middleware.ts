@@ -1,5 +1,5 @@
 import { type NextRequest, NextResponse } from 'next/server';
-import { verifyAuth } from './lib/auth';
+import { ErrorHandler, verifyAuth } from './lib/auth';
 import { ERROR_RESPONSES } from './shared/constants';
 
 export const config = {
@@ -12,13 +12,20 @@ interface Request extends NextRequest {
 
 export async function middleware(req: Request) {
     try {
+        const bearerToken = req.headers.get('authorization');
+        const token = bearerToken?.split(' ', 2)[1];
+
+        if (!bearerToken || !bearerToken.split(' ', 2)[1] || !token) {
+            throw new ErrorHandler(403, ERROR_RESPONSES.AUTH_TOKEN_IS_REQUIRED);
+        }
+
         // validate the user is authenticated
-        const verifiedToken = await verifyAuth(req);
+        const verifiedToken = await verifyAuth(bearerToken);
 
         const userId = verifiedToken.userId;
 
         if (!userId) {
-            throw ERROR_RESPONSES.USER_NOT_FOUND;
+            throw new ErrorHandler(403, ERROR_RESPONSES.UNAUTHORIZED);
         }
     } catch (error) {
         // if this an API request, respond with JSON

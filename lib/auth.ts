@@ -1,7 +1,5 @@
-import type { NextRequest } from 'next/server';
 import { SignJWT, decodeJwt, jwtVerify } from 'jose';
 import { ERROR_RESPONSES, getJwtSecretKey } from '../shared/constants';
-import { NextApiRequest } from 'next';
 
 interface UserJwtPayload {
     userId: string;
@@ -24,15 +22,7 @@ export class ErrorHandler extends Error {
 /**
  * Verifies the user's JWT token and returns its payload if it's valid.
  */
-export async function verifyAuth(req: NextRequest): Promise<Partial<UserJwtPayload>> {
-    const bearerToken = req.headers.get('authorization');
-
-    if (!bearerToken || !bearerToken.split(' ', 2)[1]) {
-        throw ERROR_RESPONSES.AUTH_TOKEN_IS_REQUIRED;
-    }
-
-    const token = bearerToken.split(' ', 2)[1];
-
+export async function verifyAuth(token: string): Promise<Partial<UserJwtPayload>> {
     try {
         const verified = await jwtVerify(
             token,
@@ -48,18 +38,9 @@ export async function verifyAuth(req: NextRequest): Promise<Partial<UserJwtPaylo
 /**
  * decode the user's JWT token
  */
-export async function decode(req: NextApiRequest) {
-    const bearerToken = req.headers.authorization;
-
-    if (!bearerToken || !bearerToken.split(' ', 2)[1]) {
-        throw new ErrorHandler(403, ERROR_RESPONSES.AUTH_TOKEN_IS_REQUIRED);
-    }
-
-    const token = bearerToken.split(' ', 2)[1];
-
+export function decode(token: string) {
     try {
-        const verified = await decodeJwt(token);
-        return verified;
+        return decodeJwt(token);
     } catch (err) {
         console.error(err);
         throw new ErrorHandler(500, ERROR_RESPONSES.PLEASE_TRY_AGAIN);
