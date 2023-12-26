@@ -247,7 +247,6 @@ h6 {
 
 .custom-input {
   color: #c3c8d4;
-  width: 181px;
   height: 40px;
 }
 
@@ -263,6 +262,8 @@ h6 {
   height: 45px;
 }
 
-.form-control::placeholder, .form-control:focus, .form-control:active {
+.form-control::placeholder,
+.form-control:focus,
+.form-control:active {
   color: #fff !important;
 }
