@@ -1,4 +1,4 @@
-import type { NextApiRequest, NextApiResponse } from 'next';
+import type { NextApiResponse } from 'next';
 import { moviesService } from '../../../shared/services/movies';
 import { ERROR_RESPONSES, SUCCESS_RESPONSES } from '../../../shared/constants';
 import { s3Service } from '../../../shared/services/s3Service';
@@ -45,6 +45,21 @@ export const config = {
  *         description: MOVIE_UPDATED
  */
 const update = async (req: any, res: any) => {
+    const { id } = req.query;
+    const userId = req.user.id;
+
+    if (!id) {
+        throw new ErrorHandler(400, ERROR_RESPONSES.MOVIE_ID_IS_REQUIRED);
+    }
+
+    const movie = await moviesService.findOne(`${id}`);
+
+    if (!movie) {
+        throw new ErrorHandler(404, ERROR_RESPONSES.MOVIE_NOT_FOUND);
+    } else if (userId !== movie.userId) {
+        throw new ErrorHandler(403, ERROR_RESPONSES.UNAUTHORIZED);
+    }
+
     await new Promise(resolve => {
         // you may use any other multer function
         const mw = multer().any();
@@ -54,18 +69,25 @@ const update = async (req: any, res: any) => {
     });
 
     const { title, publishYear } = req.body;
-    const userId = req.user.id;
-    const fileName = req.files[0].originalname;
+    const fileName = req?.files[0]?.originalname;
 
-    const ext = fileName.substring(fileName.indexOf('.') + 1);
-    const s3ObjectName = `${userId}_${title}.${ext}`;
+    if (!title) {
+        throw new ErrorHandler(400, ERROR_RESPONSES.MOVIE_TITLE_IS_REQUIRED);
+    } else if (!publishYear) {
+        throw new ErrorHandler(400, ERROR_RESPONSES.MOVIE_PUBLISH_YEAR_IS_REQUIRED);
+    }
 
-    await s3Service.upload({
-        fileName: s3ObjectName,
-        file: req.files[0].buffer,
-    });
+    let s3ObjectName = movie.imageUrl;
+    if (fileName) {
+        const ext = fileName.substring(fileName.indexOf('.') + 1);
+        s3ObjectName = `${userId}_${title}.${ext}`;
+        await s3Service.upload({
+            fileName: s3ObjectName,
+            file: req.files[0].buffer,
+        });
+    }
 
-    const movie = await moviesService.update(req.query.id, {
+    await moviesService.update(req.query.id, {
         title: title,
         publishYear: Number(publishYear),
         imageUrl: `https://movie-application.s3.us-west-2.amazonaws.com/${s3ObjectName}`,
@@ -96,15 +118,15 @@ const getById = async (req: Request, res: NextApiResponse) => {
     const userId = req.user.id;
 
     if (!id) {
-        return res.status(400).json({ message: ERROR_RESPONSES.MOVIE_ID_IS_REQUIRED });
+        throw new ErrorHandler(400, ERROR_RESPONSES.MOVIE_ID_IS_REQUIRED);
     }
 
     const movie = await moviesService.findOne(`${id}`);
 
     if (!movie) {
-        return res.status(404).json({ message: ERROR_RESPONSES.MOVIE_NOT_FOUND });
+        throw new ErrorHandler(404, ERROR_RESPONSES.MOVIE_NOT_FOUND);
     } else if (userId !== movie.userId) {
-        return res.status(403).json({ message: ERROR_RESPONSES.UNAUTHORIZED });
+        throw new ErrorHandler(403, ERROR_RESPONSES.UNAUTHORIZED);
     }
 
     return res.status(200).json({ movie });
@@ -130,7 +152,7 @@ const handler = async (
             return res.status(error.statusCode).json({ message: error.message });
         }
 
-        console.error(error)
+        console.error(error);
         res.status(500).json({ message: ERROR_RESPONSES.PLEASE_TRY_AGAIN });
     }
 };

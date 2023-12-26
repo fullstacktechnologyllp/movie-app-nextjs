@@ -1,10 +1,12 @@
-import type { NextApiRequest, NextApiResponse } from 'next';
+import type { NextApiResponse } from 'next';
 import { moviesService } from '../../../shared/services/movies';
 import { ERROR_RESPONSES, SUCCESS_RESPONSES } from '../../../shared/constants';
 import { s3Service } from '../../../shared/services/s3Service';
 import multer from 'multer';
+import { v4 } from 'uuid';
 import { Request } from '../../../shared/dtos/index';
 import { ErrorHandler } from '../../../lib/auth';
+import { authService } from '../../../shared/services/auth';
 
 export const config = {
     api: {
@@ -48,25 +50,35 @@ const create = async (req: any, res: any) => {
     });
 
     const { title, publishYear } = req.body;
-    const userId = 'cbf2afbe-b0d0-4781-b8a0-d36ee34f07f4';
-    const fileName = req.files[0].originalname;
+    const fileName = req?.files[0]?.originalname;
+    const userId = req.user.id;
 
+    if (!title) {
+        throw new ErrorHandler(400, ERROR_RESPONSES.MOVIE_TITLE_IS_REQUIRED);
+    } else if (!publishYear) {
+        throw new ErrorHandler(400, ERROR_RESPONSES.MOVIE_PUBLISH_YEAR_IS_REQUIRED);
+    } else if (!fileName) {
+        throw new ErrorHandler(400, ERROR_RESPONSES.MOVIE_POSTER_IS_REQUIRED);
+    }
+
+    const movieId = v4();
     const ext = fileName.substring(fileName.indexOf('.') + 1);
-    const s3ObjectName = `${userId}_${title}.${ext}`;
+    const s3ObjectName = `${userId}_${movieId}.${ext}`;
 
     await s3Service.upload({
         fileName: s3ObjectName,
         file: req.files[0].buffer,
     });
 
-    const movie = await moviesService.create({
+    await moviesService.create({
+        id: movieId,
         title: title,
         publishYear: Number(publishYear),
-        imageUrl: `https://movie-application.s3.us-west-2.amazonaws.com/${s3ObjectName}`,
+        imageUrl: `https://video-prompt-reply-v2.s3.us-east-2.amazonaws.com/${s3ObjectName}`,
         userId: userId
     });
 
-    return res.status(201).json({ message: SUCCESS_RESPONSES.MOVIE_CREATED });
+    return res.status(201).json({ id: movieId });
 };
 
 
@@ -97,10 +109,11 @@ const get = async (req: Request, res: NextApiResponse) => {
     const { skip, take } = req.query;
 
     if (!skip) {
-        return res.status(400).json({ message: ERROR_RESPONSES.SKIP_IS_REQUIRED });
+        throw new ErrorHandler(400, ERROR_RESPONSES.SKIP_IS_REQUIRED);
     } else if (!take) {
-        return res.status(400).json({ message: ERROR_RESPONSES.TAKE_IS_REQUIRED });
+        throw new ErrorHandler(400, ERROR_RESPONSES.TAKE_IS_REQUIRED);
     }
+
     const userId = req.user.id;
 
     const { count, movies } = await moviesService.find(userId, Number(skip), Number(take));
@@ -114,7 +127,10 @@ const handler = async (
     res: NextApiResponse
 ) => {
     try {
+        const user = await authService.authenticate(req);
+
         const { method, query } = req;
+        req.user = user;
 
         if (method === 'POST') {
             await create(req, res);
