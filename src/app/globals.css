@@ -125,6 +125,8 @@ a {
 /* Input styles */
 .custom-input-bg {
   background-color: #224957 !important;
+  border: unset !important;
+  color: #fff !important;
 }
 
 /* Typography styles */

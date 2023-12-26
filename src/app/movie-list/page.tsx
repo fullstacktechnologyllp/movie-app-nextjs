@@ -30,6 +30,8 @@ export default function MovieList() {
     { title: 'Movie 1', publishYear: 2021, imageUrl: 'https://i.etsystatic.com/18242346/r/il/fd61f8/2933715225/il_570xN.2933715225_a913.jpg' },
     { title: 'Movie 1', publishYear: 2021, imageUrl: 'https://i.etsystatic.com/18242346/r/il/fd61f8/2933715225/il_570xN.2933715225_a913.jpg' },
     { title: 'Movie 1', publishYear: 2021, imageUrl: 'https://i.etsystatic.com/18242346/r/il/fd61f8/2933715225/il_570xN.2933715225_a913.jpg' },
+    { title: 'Movie 1', publishYear: 2021, imageUrl: 'https://i.etsystatic.com/18242346/r/il/fd61f8/2933715225/il_570xN.2933715225_a913.jpg' },
+    { title: 'Movie 1', publishYear: 2021, imageUrl: 'https://i.etsystatic.com/18242346/r/il/fd61f8/2933715225/il_570xN.2933715225_a913.jpg' },
   ]);
   const [ page, setPage ] = useState(1);
   const cardsPerPage = 8;
@@ -58,11 +60,8 @@ export default function MovieList() {
       <Container className='d-flex justify-content-center my-5 py-5'>
         <Pagination className='custom-pagination py-5 '>
           <Pagination.Prev>Prev</Pagination.Prev>
-          <Pagination.Item href="#1">1</Pagination.Item>
+          <Pagination.Item href="#1" className='active'>1</Pagination.Item>
           <Pagination.Item href="#2">2</Pagination.Item>
-          <Pagination.Item href="#3">3</Pagination.Item>
-          <Pagination.Item href="#4">4</Pagination.Item>
-          <Pagination.Item href="#5">5</Pagination.Item>
           <Pagination.Next>Next
           </Pagination.Next>
         </Pagination>
