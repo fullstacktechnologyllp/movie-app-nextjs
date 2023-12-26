@@ -3,7 +3,7 @@ import { verifyAuth } from './lib/auth';
 import { ERROR_RESPONSES } from './shared/constants';
 
 export const config = {
-    matcher: ['/api/hello2'],
+    matcher: ['/api/movies'],
 };
 
 interface Request extends NextRequest {

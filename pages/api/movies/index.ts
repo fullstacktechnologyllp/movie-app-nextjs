@@ -3,6 +3,8 @@ import { moviesService } from '../../../shared/services/movies';
 import { ERROR_RESPONSES, SUCCESS_RESPONSES } from '../../../shared/constants';
 import { s3Service } from '../../../shared/services/s3Service';
 import multer from 'multer';
+import { Request } from '../../../shared/dtos/index';
+import { ErrorHandler } from '../../../lib/auth';
 
 export const config = {
     api: {
@@ -91,7 +93,7 @@ const create = async (req: any, res: any) => {
  *       200:
  *         description: Movies
  */
-const get = async (req: NextApiRequest, res: NextApiResponse) => {
+const get = async (req: Request, res: NextApiResponse) => {
     const { skip, take } = req.query;
 
     if (!skip) {
@@ -99,7 +101,7 @@ const get = async (req: NextApiRequest, res: NextApiResponse) => {
     } else if (!take) {
         return res.status(400).json({ message: ERROR_RESPONSES.TAKE_IS_REQUIRED });
     }
-    const userId = 'cbf2afbe-b0d0-4781-b8a0-d36ee34f07f4';
+    const userId = req.user.id;
 
     const { count, movies } = await moviesService.find(userId, Number(skip), Number(take));
 
@@ -108,7 +110,7 @@ const get = async (req: NextApiRequest, res: NextApiResponse) => {
 
 
 const handler = async (
-    req: NextApiRequest,
+    req: Request,
     res: NextApiResponse
 ) => {
     try {
@@ -120,6 +122,10 @@ const handler = async (
             await get(req, res);
         }
     } catch (error) {
+        if (error instanceof ErrorHandler) {
+            return res.status(error.statusCode).json({ message: error.message });
+        }
+
         console.error(error);
         res.status(500).json({ message: ERROR_RESPONSES.PLEASE_TRY_AGAIN });
     }

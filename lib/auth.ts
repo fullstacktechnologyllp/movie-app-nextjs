@@ -8,7 +8,18 @@ interface UserJwtPayload {
     iat: number;
 }
 
-export class AuthError extends Error { }
+export class ErrorHandler extends Error {
+    readonly statusCode: number = 404;
+    readonly message: string = '';
+    constructor(
+        statusCode: number,
+        message: string
+    ) {
+        super();
+        this.statusCode = statusCode
+        this.message = message
+    };
+}
 
 /**
  * Verifies the user's JWT token and returns its payload if it's valid.
@@ -27,7 +38,7 @@ export async function verifyAuth(req: NextRequest): Promise<Partial<UserJwtPaylo
             token,
             new TextEncoder().encode(getJwtSecretKey())
         );
-        console.log(verified);
+
         return verified.payload;
     } catch (err) {
         throw ERROR_RESPONSES.AUTH_TOKEN_IS_EXPIRED;
@@ -41,7 +52,7 @@ export async function decode(req: NextApiRequest) {
     const bearerToken = req.headers.authorization;
 
     if (!bearerToken || !bearerToken.split(' ', 2)[1]) {
-        throw ERROR_RESPONSES.AUTH_TOKEN_IS_REQUIRED;
+        throw new ErrorHandler(403, ERROR_RESPONSES.AUTH_TOKEN_IS_REQUIRED);
     }
 
     const token = bearerToken.split(' ', 2)[1];
@@ -51,7 +62,7 @@ export async function decode(req: NextApiRequest) {
         return verified;
     } catch (err) {
         console.error(err);
-        throw ERROR_RESPONSES.AUTH_TOKEN_IS_EXPIRED;
+        throw new ErrorHandler(500, ERROR_RESPONSES.PLEASE_TRY_AGAIN);
     }
 }
 
@@ -59,11 +70,15 @@ export async function decode(req: NextApiRequest) {
  * Adds the user token to a response.
  */
 export async function setUserToken(userId: string) {
-    const token = await new SignJWT({ userId })
-        .setProtectedHeader({ alg: 'HS256' })
-        .setIssuedAt()
-        .setExpirationTime('1d')
-        .sign(new TextEncoder().encode(getJwtSecretKey()));
+    try {
+        const token = await new SignJWT({ userId })
+            .setProtectedHeader({ alg: 'HS256' })
+            .setIssuedAt()
+            .setExpirationTime('1d')
+            .sign(new TextEncoder().encode(getJwtSecretKey()));
 
-    return token;
+        return token;
+    } catch (err) {
+        throw new ErrorHandler(500, ERROR_RESPONSES.PLEASE_TRY_AGAIN);
+    }
 }

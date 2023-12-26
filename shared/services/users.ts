@@ -16,14 +16,22 @@ class UsersService {
             email: string;
         }[] = [];
 
-        USERS.forEach((user) => {
-            user.password = utilService.encodePassword(user.password);
-            userSeed.push(user);
-        });
+        for await (const user of USERS) {
+            const isAlreadySeeded = await this.findOneById(user.id);
 
-        return await prismaService.user().createMany({
-            data: userSeed
-        });
+            if (!isAlreadySeeded) {
+                user.password = utilService.encodePassword(user.password);
+                userSeed.push(user);
+            }
+        }
+
+        if (userSeed.length) {
+            await prismaService.user().createMany({
+                data: userSeed
+            });
+        }
+
+        return true;
     }
 
     /**

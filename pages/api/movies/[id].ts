@@ -3,6 +3,9 @@ import { moviesService } from '../../../shared/services/movies';
 import { ERROR_RESPONSES, SUCCESS_RESPONSES } from '../../../shared/constants';
 import { s3Service } from '../../../shared/services/s3Service';
 import multer from 'multer';
+import { authService } from '../../../shared/services/auth';
+import { Request } from '../../../shared/dtos/index';
+import { ErrorHandler } from '../../../lib/auth';
 
 export const config = {
     api: {
@@ -51,7 +54,7 @@ const update = async (req: any, res: any) => {
     });
 
     const { title, publishYear } = req.body;
-    const userId = 'cbf2afbe-b0d0-4781-b8a0-d36ee34f07f4';
+    const userId = req.user.id;
     const fileName = req.files[0].originalname;
 
     const ext = fileName.substring(fileName.indexOf('.') + 1);
@@ -88,8 +91,9 @@ const update = async (req: any, res: any) => {
  *       200:
  *         description: Movie
  */
-const getById = async (req: NextApiRequest, res: NextApiResponse) => {
+const getById = async (req: Request, res: NextApiResponse) => {
     const { id } = req.query;
+    const userId = req.user.id;
 
     if (!id) {
         return res.status(400).json({ message: ERROR_RESPONSES.MOVIE_ID_IS_REQUIRED });
@@ -99,17 +103,22 @@ const getById = async (req: NextApiRequest, res: NextApiResponse) => {
 
     if (!movie) {
         return res.status(404).json({ message: ERROR_RESPONSES.MOVIE_NOT_FOUND });
+    } else if (userId !== movie.userId) {
+        return res.status(403).json({ message: ERROR_RESPONSES.UNAUTHORIZED });
     }
 
     return res.status(200).json({ movie });
 };
 
 const handler = async (
-    req: NextApiRequest,
+    req: Request,
     res: NextApiResponse
 ) => {
     try {
+        const user = await authService.authenticate(req);
         const { method, query } = req;
+
+        req.user = user;
 
         if (method === 'PUT' && query.id) {
             await update(req, res);
@@ -117,7 +126,11 @@ const handler = async (
             await getById(req, res);
         }
     } catch (error) {
-        console.error(error);
+        if (error instanceof ErrorHandler) {
+            return res.status(error.statusCode).json({ message: error.message });
+        }
+
+        console.error(error)
         res.status(500).json({ message: ERROR_RESPONSES.PLEASE_TRY_AGAIN });
     }
 };
