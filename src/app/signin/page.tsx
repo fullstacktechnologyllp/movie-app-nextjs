@@ -12,20 +12,16 @@ export default function Signin() {
   return (
     <div
       style={ {
-        backgroundImage: `url(${signinImage.src})`,
-        backgroundSize: 'cover',
-        height: '100vh',
+        height:'100vh',
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundRepeat: 'no-repeat',
-        backgroundPositionY: 'bottom',
       } }
     >
       <Container>
         <Row className='justify-content-center text-white'>
           <Col md={ 3 } className='p-4 rounded'>
-            <h1 className='text-center mb-4'>Sign in</h1>
+            <h1 className='text-center mb-4'>Sign in </h1>
             <Form>
               <Form.Group controlId="formBasicEmail" className='mb-3'>
                 <Form.Control type="email" className='custom-input custom-input-bg' placeholder="Email" />

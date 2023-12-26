@@ -1,0 +1,24 @@
+.upload-box {
+  min-width: 373px;
+  max-width: 373px;
+  min-height: 404px;
+  max-height: 404px;
+  border-radius: 10px;
+  border: 2px dotted #FFFFFF;
+}
+
+.file-input-style {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0px;
+  left: 0px;
+  opacity: 0px !important;
+  cursor: pointer;
+}
+
+.preview-image-styles {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
