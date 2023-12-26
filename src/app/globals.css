@@ -95,7 +95,6 @@ a {
 
 
 .btn {
-
   border-radius: 24px;
 }
 
@@ -103,22 +102,29 @@ a {
 .btn-primary-custom {
   background-color: #2bd17e !important;
   border: unset !important;
+  border-radius: 10px !important;
+}
+
+.btn-md {
+  min-width: 179px;
+  min-height: 56px
 }
 
 .btn-danger-custom {
   background-color: #eb5757 !important;
   border: unset !important;
+  border-radius: 10px !important;
+}
+
+.btn-transparent {
+  background-color: #00000000 !important;
+  border: 1px solid #fff !important;
+  border-radius: 10px !important;
 }
 
 /* Input styles */
 .custom-input-bg {
   background-color: #224957 !important;
-}
-.custom-input {
-  color: #fff !important;
-  border: unset !important;
-  width: 181px;
-  height: 40px;
 }
 
 /* Typography styles */
@@ -238,6 +244,7 @@ h6 {
 .mt-8 {
   margin-top: 8px;
 }
+
 .custom-input {
   color: #c3c8d4;
   width: 181px;
@@ -246,5 +253,16 @@ h6 {
 
 /* Placeholder style for email input */
 .custom-input::placeholder {
-  color: white;
+  color: rgba(255, 255, 255, 0);
+}
+
+.form-control:valid {
+  background-color: #224957 !important;
+  border: unset !important;
+  color: #fff;
+  height: 45px;
+}
+
+.form-control::placeholder {
+  color: #fff !important;
 }
