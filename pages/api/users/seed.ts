@@ -2,6 +2,15 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import { userService } from '../../../shared/services/users';
 import { ERROR_RESPONSES, SUCCESS_RESPONSES } from '../../../shared/constants';
 
+/**
+ * @swagger
+ * /api/users/seed:
+ *   get:
+ *     description: Seeds all default users
+ *     responses:
+ *       200:
+ *         description: USERS_SEEDED
+ */
 const seedUsers = async () => {
     await userService.seed();
 };
