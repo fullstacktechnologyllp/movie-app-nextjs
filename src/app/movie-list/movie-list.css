@@ -1,7 +1,8 @@
-.custom-pagination .page-item{
-  padding: 0px 5px; 
+.custom-pagination .page-item {
+  padding: 0px 5px;
 }
-.custom-pagination .page-item a{
+
+.custom-pagination .page-item a {
   background-color: #092C39 !important;
   border: unset;
   color: #fff;
@@ -22,4 +23,18 @@
 .custom-pagination .page-item.active a {
   background-color: #2BD17E !important;
   color: #fff !important;
+}
+
+.movie-card:hover {
+  background: linear-gradient(0deg, rgba(255, 255, 255, 0.09) 0%, rgba(255, 255, 255, 0.09) 100%), rgba(8, 41, 53, 0.55);
+  backdrop-filter: blur(100px);
+
+}
+
+.movie-card {
+  border: unset;
+  flex-shrink: 0;
+  background: #092C39;
+  padding: 10px;
+  border-radius: 12px;
 }

@@ -269,3 +269,7 @@ h6 {
 .form-control:active {
   color: #fff !important;
 }
+
+.cursor-pointer{
+  cursor: pointer;
+}

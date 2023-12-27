@@ -8,10 +8,11 @@ import 'react-datepicker/dist/react-datepicker.css';
 import './movie-action.css';
 import fileDownload from '../../../assets/images/file_download.svg';
 import { useRouter } from 'next/navigation';
+import { useParams } from 'next/navigation';
 
-export default function MovieForm({ props }: any) {
-  console.log(props);
+export default function MovieForm() {
   const router = useRouter();
+  const params = useParams();
   const fileInputStyles: React.CSSProperties = {
     position: 'absolute',
     width: '100%',
