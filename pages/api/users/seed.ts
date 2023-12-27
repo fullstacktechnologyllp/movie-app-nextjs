@@ -11,6 +11,8 @@ import { ErrorHandler } from '../../../lib/auth';
  *     responses:
  *       200:
  *         description: USERS_SEEDED
+ *     tags:
+ *       - users
  */
 const seedUsers = async () => {
     await userService.seed();

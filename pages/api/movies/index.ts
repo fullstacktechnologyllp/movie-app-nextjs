@@ -39,6 +39,8 @@ export const config = {
  *    responses:
  *       201:
  *         description: MOVIE_CREATED
+ *    tags:
+ *       - movies
  */
 const create = async (req: any, res: any) => {
     await new Promise(resolve => {
@@ -104,6 +106,8 @@ const create = async (req: any, res: any) => {
  *     responses:
  *       200:
  *         description: Movies
+ *     tags:
+ *       - movies
  */
 const get = async (req: Request, res: NextApiResponse) => {
     const { skip, take } = req.query;

@@ -12,6 +12,8 @@ type ResponseData = {
  *     responses:
  *       200:
  *         description: { 'version': '1.0.0' }
+ *     tags:
+ *       - info
  */
 export default function handler(
     req: NextApiRequest,

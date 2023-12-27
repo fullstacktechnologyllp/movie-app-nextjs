@@ -24,6 +24,8 @@ import { ErrorHandler, setUserToken } from '../../lib/auth';
  *     responses:
  *       200:
  *         description: User token
+ *     tags:
+ *      - login
  */
 const login = async (req: NextApiRequest, res: NextApiResponse) => {
     const { email, password } = req.body;
