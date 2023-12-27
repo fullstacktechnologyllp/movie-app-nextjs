@@ -142,9 +142,8 @@ const handler = async (
 ) => {
     try {
         const user = await authService.authenticate(req);
-        const { method, query } = req;
-
         req.user = user;
+        const { method, query } = req;
 
         if (method === 'PUT' && query.id) {
             await update(req, res);

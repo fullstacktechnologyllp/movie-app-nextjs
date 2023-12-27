@@ -132,9 +132,8 @@ const handler = async (
 ) => {
     try {
         const user = await authService.authenticate(req);
-
-        const { method, query } = req;
         req.user = user;
+        const { method, query } = req;
 
         if (method === 'POST') {
             await create(req, res);

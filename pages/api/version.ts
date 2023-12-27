@@ -8,12 +8,25 @@ type ResponseData = {
  * @swagger
  * /api/version:
  *   get:
- *     description: Returns the app version
- *     responses:
- *       200:
- *         description: { 'version': '1.0.0' }
  *     tags:
  *       - info
+ *     summary: Get version info
+ *     description: Get version info
+ *     responses:
+ *       200:
+ *         description: Successful operation
+ *         content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/Info'
+ * components:
+ *  schemas:
+ *   Info:
+ *    type: object
+ *    properties:
+ *     version:
+ *      type: string
+ *      example: 1.0.0
  */
 export default function handler(
     req: NextApiRequest,

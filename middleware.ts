@@ -20,7 +20,7 @@ export async function middleware(req: Request) {
         }
 
         // validate the user is authenticated
-        const verifiedToken = await verifyAuth(bearerToken);
+        const verifiedToken = await verifyAuth(token);
 
         const userId = verifiedToken.userId;
 
@@ -30,8 +30,9 @@ export async function middleware(req: Request) {
     } catch (error) {
         // if this an API request, respond with JSON
         if (req.nextUrl.pathname.startsWith('/api/')) {
-            return new NextResponse(
-                JSON.stringify({ message: error }), { status: 401 });
+            return new NextResponse((JSON.stringify({
+                message: error
+            })), { status: 403 });
         }
         // otherwise, redirect to the set token page
         else {
