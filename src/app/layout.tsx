@@ -3,7 +3,6 @@ import { Montserrat } from 'next/font/google'
 import './globals.css'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import signinImage from '../assets/images/sign-in.jpg';
-
 const montserrat = Montserrat({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
@@ -21,7 +20,7 @@ export default function RootLayout({
       <body className={montserrat.className}><div
       style={ {
         backgroundImage: `url(${signinImage.src})`,
-        backgroundSize: 'contain',
+        backgroundSize: '100%',
         height: '100%',
         backgroundColor: '#083544',
         backgroundRepeat: 'no-repeat',
