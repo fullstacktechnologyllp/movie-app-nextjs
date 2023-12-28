@@ -79,22 +79,26 @@ const update = async (req: any, res: any) => {
         throw new ErrorHandler(400, ERROR_RESPONSES.MOVIE_PUBLISH_YEAR_IS_REQUIRED);
     }
 
-    let s3ObjectName = movie.imageUrl;
+    const updateOptions = {
+        title: title,
+        publishYear: Number(publishYear),
+        imageUrl: movie.imageUrl,
+        userId: userId
+    };
+
+    console.log('fileName:', fileName);
     if (fileName) {
         const ext = fileName.substring(fileName.indexOf('.') + 1);
-        s3ObjectName = `${userId}_${title}.${ext}`;
+        const s3ObjectName = `${userId}_${movie.id}.${ext}`;
         await s3Service.upload({
             fileName: s3ObjectName,
             file: req.files[0].buffer,
         });
+
+        updateOptions.imageUrl = `https://video-prompt-reply-v2.s3.us-east-2.amazonaws.com/${s3ObjectName}`
     }
 
-    await moviesService.update(req.query.id, {
-        title: title,
-        publishYear: Number(publishYear),
-        imageUrl: `https://movie-application.s3.us-west-2.amazonaws.com/${s3ObjectName}`,
-        userId: userId
-    },);
+    await moviesService.update(req.query.id, updateOptions);
 
     return res.status(200).json({ message: SUCCESS_RESPONSES.MOVIE_UPDATED });
 };
