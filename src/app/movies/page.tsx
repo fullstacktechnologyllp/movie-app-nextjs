@@ -76,14 +76,14 @@ export default function Movies() {
             </h2>
             <div className='d-flex'>
               <LanguageSwitcher className="me-2"></LanguageSwitcher>
-              <div onClick={ handleLogout } className='cursor-pointer'>
+              <div onClick={ handleLogout } className='cursor-pointer d-flex align-items-center'>
                 <span className='regular-body'>{ t('logout') }
                   <Image src={ logout } alt='add movies' width={ 18 } className='ms-3' />
                 </span>
               </div>
             </div>
           </div>
-          <Row xs={ 1 } md={ 4 } className="g-4">
+          <Row xs={ 2 } md={ 4 } className="g-4">
             { currentPageCards.map((card: any, index) =>
               <Col key={ index }>
                 <CustomCard { ...card } />

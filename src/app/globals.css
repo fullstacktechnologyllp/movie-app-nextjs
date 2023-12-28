@@ -125,7 +125,7 @@ a {
 /* Input styles */
 .custom-input-bg {
   background-color: #224957 !important;
-  border: unset !important;
+  /* border: unset !important; */
   color: #fff !important;
 }
 
@@ -202,13 +202,13 @@ h6 {
   letter-spacing: 0em !important;
 }
 
-.small-body {
+.small-body,
+* {
   font-family: Montserrat;
   font-size: 14px;
   font-weight: 400;
   line-height: 24px;
   letter-spacing: 0em;
-  text-align: left;
 }
 
 .extra-small-body {
@@ -249,7 +249,7 @@ h6 {
 
 .custom-input {
   color: #c3c8d4;
-  height: 40px;
+  border: unset;
 }
 
 /* Placeholder style for email input */
@@ -259,7 +259,7 @@ h6 {
 
 .form-control:valid {
   background-color: #224957 !important;
-  border: unset !important;
+  /* border: unset !important; */
   color: #fff;
   height: 45px;
 }
@@ -293,6 +293,27 @@ h6 {
   /* Ensure spinner stays on top of the overlay */
 }
 
-.mt--2{
+.mt--2 {
   margin-top: -0.8rem !important;
+}
+
+@media (min-width: 768px) {
+  .order-md-0 {
+    order: 0 !important;
+  }
+}
+
+.form-control {
+  font-size: 14px !important;
+  height: 45px;
+  --bs-border-color: #00000000;
+}
+
+.remember-me-checkbox .form-check-input {
+  background-color: #224957;
+  border: unset;
+  height: 17px;
+  width: 18px;
+  border-radius: 5px;
+  margin-right: 8px;
 }

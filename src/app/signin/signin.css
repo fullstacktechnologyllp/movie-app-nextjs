@@ -1,0 +1,15 @@
+.login-button {
+  padding: 15px 126px;
+}
+
+.text-sign-in {
+  padding-bottom: 40px;
+}
+
+.input-email {
+  margin-bottom: 24px;
+}
+
+.is-invalid {
+  border: 1px solid #EB5757;
+}

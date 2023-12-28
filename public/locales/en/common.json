@@ -10,7 +10,7 @@
   "movie_list_is_empty":"Your movie list is empty",
   "add_new_movie":"Add a new movie",
   "title":"Title",
-  "publish_year":"Publish Year",
+  "publish_year":"Publishing year",
   "drop_image_here":"Drop an image here",
   "prev":"Prev",
   "next":"Next",
@@ -19,7 +19,7 @@
   "password":"Password",
   "errors": {
     "PLEASE_TRY_AGAIN":"Please try again.",
-    "INVALID_PASSWORD":"Password is invalid.",
+    "INVALID_PASSWORD":"Invalid Credential.",
     "MOVIE_TITLE_IS_REQUIRED": "Movie title is required.",
     "MOVIE_POSTER_IS_REQUIRED": "Movie poster is required.",
     "MOVIE_PUBLISH_YEAR_IS_REQUIRED": "Movie publish year is required.",
@@ -27,7 +27,7 @@
     "PASSWORD_IS_REQUIRED": "Password is required.",
     "enter_valid_email_address":"Please enter a valid email address",
     "enter_valid_password":"Please enter a valid password",
-    "USER_NOT_FOUND":"User not found with this email"
+    "USER_NOT_FOUND":"Invalid Credential."
   },
   "success":{
     "movie_updated" :"Movie updated successfully.",

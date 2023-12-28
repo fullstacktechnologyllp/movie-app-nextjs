@@ -12,12 +12,15 @@ import axios from '../../services/api';
 import { toast } from 'react-toastify';
 import { useTranslation } from 'next-i18next';
 import '../../../i18n';
+import { useMediaQuery } from 'react-responsive';
 
 export default function MovieForm() {
   const router = useRouter();
   const { id } = useParams<any>();
   const isUpdate = id && id !== '0';
   const { t } = useTranslation();
+  const [isMobile, setIsMobile] = useState(false);
+  const isMobileQuery = useMediaQuery({ maxWidth: 767 });
 
   const fileInputStyles: React.CSSProperties = {
     position: 'absolute',
@@ -29,10 +32,12 @@ export default function MovieForm() {
     cursor: 'pointer',
   };
   const previewStyles: React.CSSProperties = {
+    // width: '100%',
+    // height: '100%',
+    // maxWidth: '373px',
+    // maxHeight: '400px',
     width: '100%',
     height: '100%',
-    maxWidth: '373px',
-    maxHeight: '400px',
     borderRadius: '12px'
   };
 
@@ -80,14 +85,18 @@ export default function MovieForm() {
     }
   }, [ isUpdate ]);
 
+  useEffect(() => {
+    setIsMobile(isMobileQuery);
+  }, [isMobileQuery]);
+
   const notifySuccess = (message: string) => toast.success(message);
   const notifyError = (message: string) => toast.error(message);
 
   const validateForm = () => {
     const newErrors = {
-      movieName: movieName.trim() ? '' : 'Movie name is required',
-      selectedYear: selectedYear ? '' : 'Please select a year',
-      poster: isUpdate || uploadFile ? '' : 'Please upload a poster',
+      movieName: movieName.trim() ? '' : t('errors.MOVIE_TITLE_IS_REQUIRED'),
+      selectedYear: selectedYear ? '' : t('errors.MOVIE_PUBLISH_YEAR_IS_REQUIRED'),
+      poster: isUpdate || uploadFile ? '' : t('errors.MOVIE_POSTER_IS_REQUIRED'),
     };
 
     setErrors(newErrors);
@@ -142,10 +151,10 @@ export default function MovieForm() {
       ) }
       <Container className='pt-5 text-white'>
         <div className="text-left pt-5 mb-5">
-          <h2 className='text-white'>{ !isUpdate ? t('create_movie') : t('edit') } </h2>
+          <span className='h1 text-white'>{ !isUpdate ? t('create_movie') : t('edit') } </span>
         </div>
         <Form onSubmit={ movieUpsert }>
-          <Row>
+          <Row className=''>
             <Col md={ 4 }>
               <div className="position-relative upload-box">
                 <input
@@ -169,11 +178,10 @@ export default function MovieForm() {
             </Col>
             <Col md={ 1 }>
             </Col>
-            <Col md={ 6 }>
-
+            <Col md={ 6 } className='mt-4 mt-lg-0'>
               <Form.Group controlId="movieName">
                 <Form.Control type="text" placeholder={ t('title') } value={ movieName }
-                  className={ `mb-3 w-75 custom-input ${errors.movieName && 'is-invalid border-1 border-danger'}` }
+                  className={ `mb-3 ${isMobile ? 'w-100' : 'w-75'} custom-input ${errors.movieName && 'is-invalid border-1 border-danger'}` }
                   onChange={ (event) => setMovieName(event.target.value) } />
                 { errors.movieName && <div className="invalid-feedback d-block mt--2">{ errors.movieName }</div> }
 
@@ -183,6 +191,7 @@ export default function MovieForm() {
                   selected={ selectedYear }
                   onChange={ (date: Date | null) => setSelectedYear(date) }
                   className={ `form-control ${errors.selectedYear && 'is-invalid border-1 border-danger'}` }
+                  wrapperClassName={`${isMobile ? 'w-100' : 'w-50'}`}
                   dateFormat="yyyy"
                   showYearPicker
                   placeholderText={ t('publish_year') }
@@ -192,7 +201,7 @@ export default function MovieForm() {
               </Form.Group>
               <div className="mb-2">
                 <Button variant="primary" onClick={ () => router.push('/movies') } type="button"
-                  className='me-lg-3 btn btn-md regular-body btn-transparent'>
+                  className='me-2 me-lg-3 btn btn-md regular-body btn-transparent'>
                   { t('cancel') }
                 </Button>
                 <Button className='btn-primary-custom btn btn-md regular-body' type="submit">

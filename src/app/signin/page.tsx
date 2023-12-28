@@ -7,6 +7,7 @@ import axios from '../services/api';
 import { appWithTranslation, useTranslation } from 'next-i18next';
 import { toast } from 'react-toastify';
 import '../../i18n';
+import './signin.css';
 
 function Signin() {
 
@@ -74,6 +75,21 @@ function Signin() {
     }
 
   }
+  const validateEmail = (inputEmail: string) => {
+    const newErrors = { ...errors, email: '' };
+    if (!inputEmail || !inputEmail.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i)) {
+      newErrors.email = t('errors.enter_valid_email_address');
+    }
+    setErrors(newErrors);
+  };
+
+  const validatePassword = (inputPassword: string) => {
+    const newErrors = { ...errors, password: '' };
+    if (!inputPassword) {
+      newErrors.password = t('errors.enter_valid_password');
+    }
+    setErrors(newErrors);
+  };
 
   return (
     <div
@@ -94,14 +110,14 @@ function Signin() {
       <Container>
         <Row className='justify-content-center text-white'>
           <Col md={ 3 } className='p-4 rounded'>
-            <h1 className='text-center mb-4'>{ t('signin') }</h1>
+            <h1 className='text-center text-sign-in'>{ t('signin') }</h1>
             <Form onSubmit={ loginFormSubmit }>
-              <Form.Group controlId="formBasicEmail" className='mb-3'>
+              <Form.Group controlId="formBasicEmail" className='mb-3 input-email'>
                 <Form.Control type="email"
                   className={ `custom-input custom-input-bg ${errors.email && 'is-invalid border-1 border-danger'}` }
                   placeholder={ t('email') }
-                  value={ email }
-                  onChange={ (e) => setEmail(e.target.value) }
+                  onChange={ (e) => validateEmail(e.target.value) }
+                  onBlur={ (e) => setEmail(e.target.value) }
                 />
                 { errors.email && <div className="invalid-feedback">{ errors.email }</div> }
 
@@ -109,18 +125,19 @@ function Signin() {
 
               <Form.Group controlId="formBasicPassword" className='mb-3'>
                 <Form.Control type="password"
-                  className={ `custom-input custom-input-bg ${errors.password && 'is-invalid border-1 border-danger'}` }
+                  className={ `custom-input custom-input-bg border-0 ${errors.password && 'is-invalid border-1 border-danger'}` }
                   placeholder={ t('password') }
-                  onChange={ (e) => setPassword(e.target.value) }
+                  onChange={ (e) => validatePassword(e.target.value) }
+                  onBlur={ (e) => setPassword(e.target.value) }
                 />
                 { errors.password && <div className="invalid-feedback">{ errors.password }</div> }
               </Form.Group>
 
-              <Form.Group controlId="formBasicCheckbox" className='d-flex justify-content-center mb-3'>
+              <Form.Group controlId="formBasicCheckbox" className='d-flex justify-content-center mb-3 remember-me-checkbox'>
                 <Form.Check type="checkbox" label={ t('remember_me') } />
               </Form.Group>
 
-              <Button variant="primary" type="submit" className='w-100 btn-primary-custom regular-body' size='lg'>
+              <Button variant="primary" type="submit" className='w-100 btn-primary-custom regular-body login-button' size='lg'>
                 { t('login') }
               </Button>
             </Form>

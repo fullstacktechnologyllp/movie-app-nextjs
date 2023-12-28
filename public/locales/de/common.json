@@ -19,7 +19,7 @@
   "password":"Passwort",
   "errors": {
     "PLEASE_TRY_AGAIN": "Bitte versuche es erneut.",
-    "INVALID_PASSWORD": "Passwort ist ungültig.",
+    "INVALID_PASSWORD": "Ungültige Anmeldeinformationen.",
     "MOVIE_TITLE_IS_REQUIRED": "Filmtitel ist erforderlich.",
     "MOVIE_POSTER_IS_REQUIRED": "Filmplakat ist erforderlich.",
     "MOVIE_PUBLISH_YEAR_IS_REQUIRED": "Filmveröffentlichung ist erforderlich.",
@@ -27,7 +27,7 @@
     "PASSWORD_IS_REQUIRED": "Passwort wird benötigt.",
     "enter_valid_email_address":"Bitte geben Sie eine gültige E-Mail-Adresse ein",
     "enter_valid_password":"Bitte geben Sie ein gültiges Passwort ein",
-    "USER_NOT_FOUND":"Benutzer, der mit dieser E -Mail nicht zu finden ist"
+    "USER_NOT_FOUND":"Ungültige Anmeldeinformationen."
   },
   "success": {
     "movie_updated": "Film erfolgreich aktualisiert.",

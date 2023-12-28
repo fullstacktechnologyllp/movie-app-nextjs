@@ -1,8 +1,10 @@
 .upload-box {
-  min-width: 373px;
+  /* min-width: 373px;
   max-width: 373px;
   min-height: 404px;
-  max-height: 404px;
+  max-height: 404px; */
+  width: 373px;
+  height: 400px;
   border-radius: 10px;
   border: 2px dotted #FFFFFF;
 }
