@@ -1,38 +1,43 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Form, Button, Container, Row, Col } from 'react-bootstrap';
 import { useRouter } from 'next/navigation';
-import axios from 'axios';
-import { useTranslation } from 'next-i18next';
+import axios from '../services/api';
+import { appWithTranslation, useTranslation } from 'next-i18next';
+import { toast } from 'react-toastify';
 
-export default function Signin() {
+function Signin() {
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (token !== '') {
+      // window.location.href = '/movies'
+    }
+  }, []);
 
   const { t } = useTranslation();
   const router = useRouter();
-  const apiUrl = process.env.API_URL;
   const [ email, setEmail ] = useState('');
   const [ password, setPassword ] = useState('');
 
   const navigateLink = (to: any) => {
     router.push(to);
   }
+  const notify = (message: string) => toast.error(message);
 
-  console.log(apiUrl);
   const loginFormSubmit = async (event: any) => {
-    event.preventDefault(); // Prevents the default form submission behavior
+    event.preventDefault();
     try {
-      const login = await axios.post('/api/login', {
+      const loginApi = await axios.post('/api/login', {
         email,
         password,
       });
-
-      // Handle the login response, e.g., redirect on successful login
-      console.log('Login successful!', login);
-      // Redirect to the desired route upon successful login
+      const data: { token: string } = loginApi.data;
+      localStorage.setItem('token', data.token)
       navigateLink('/movies');
-    } catch (error) {
-      // Handle login error here
+    } catch (error: any) {
+      notify(t(`errors.${error.message}`));
       console.error('Login failed:', error);
     }
   }
@@ -50,7 +55,7 @@ export default function Signin() {
         <Row className='justify-content-center text-white'>
           <Col md={ 3 } className='p-4 rounded'>
             <h1 className='text-center mb-4'>{ t('signin') }</h1>
-            <Form>
+            <Form onSubmit={ loginFormSubmit }>
               <Form.Group controlId="formBasicEmail" className='mb-3'>
                 <Form.Control type="email" className='custom-input custom-input-bg' placeholder="Email"
                   value={ email }
@@ -68,7 +73,7 @@ export default function Signin() {
                 <Form.Check type="checkbox" label="Remember me" />
               </Form.Group>
 
-              <Button onClick={ loginFormSubmit } variant="primary" type="button" className='w-100 btn-primary-custom regular-body' size='lg'>
+              <Button variant="primary" type="submit" className='w-100 btn-primary-custom regular-body' size='lg'>
                 Login
               </Button>
             </Form>
@@ -78,3 +83,5 @@ export default function Signin() {
     </div>
   );
 }
+
+export default appWithTranslation(Signin);

@@ -1,3 +1,7 @@
 {
-  "signin": "Sign in"
+  "signin": "Sign in",
+  "errors": {
+    "PLEASE_TRY_AGAIN":"Please try again.",
+    "INVALID_PASSWORD":"Password is invalid."
+  }
 }

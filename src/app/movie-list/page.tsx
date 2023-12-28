@@ -7,42 +7,32 @@ import plus from '../../assets/images/plus.svg';
 import logout from '../../assets/images/logout.svg';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
+import axios from '../services/api';
 
 export default function MovieList() {
 
   const router = useRouter();
 
-  const [ cardData, setCardData ] = useState([
-    { title: 'Movie 1', publishYear: 2021, imageUrl: 'https://i.etsystatic.com/18242346/r/il/fd61f8/2933715225/il_570xN.2933715225_a913.jpg' },
-    { title: 'Movie 1', publishYear: 2021, imageUrl: 'https://i.etsystatic.com/18242346/r/il/fd61f8/2933715225/il_570xN.2933715225_a913.jpg' },
-    { title: 'Movie 1', publishYear: 2021, imageUrl: 'https://i.etsystatic.com/18242346/r/il/fd61f8/2933715225/il_570xN.2933715225_a913.jpg' },
-    { title: 'Movie 1', publishYear: 2021, imageUrl: 'https://i.etsystatic.com/18242346/r/il/fd61f8/2933715225/il_570xN.2933715225_a913.jpg' },
-    { title: 'Movie 1', publishYear: 2021, imageUrl: 'https://i.etsystatic.com/18242346/r/il/fd61f8/2933715225/il_570xN.2933715225_a913.jpg' },
-    { title: 'Movie 1', publishYear: 2021, imageUrl: 'https://i.etsystatic.com/18242346/r/il/fd61f8/2933715225/il_570xN.2933715225_a913.jpg' },
-    { title: 'Movie 1', publishYear: 2021, imageUrl: 'https://i.etsystatic.com/18242346/r/il/fd61f8/2933715225/il_570xN.2933715225_a913.jpg' },
-    { title: 'Movie 1', publishYear: 2021, imageUrl: 'https://i.etsystatic.com/18242346/r/il/fd61f8/2933715225/il_570xN.2933715225_a913.jpg' },
-    { title: 'Movie 1', publishYear: 2021, imageUrl: 'https://i.etsystatic.com/18242346/r/il/fd61f8/2933715225/il_570xN.2933715225_a913.jpg' },
-    { title: 'Movie 1', publishYear: 2021, imageUrl: 'https://i.etsystatic.com/18242346/r/il/fd61f8/2933715225/il_570xN.2933715225_a913.jpg' },
-    { title: 'Movie 1', publishYear: 2021, imageUrl: 'https://i.etsystatic.com/18242346/r/il/fd61f8/2933715225/il_570xN.2933715225_a913.jpg' },
-    { title: 'Movie 1', publishYear: 2021, imageUrl: 'https://i.etsystatic.com/18242346/r/il/fd61f8/2933715225/il_570xN.2933715225_a913.jpg' },
-    { title: 'Movie 1', publishYear: 2021, imageUrl: 'https://i.etsystatic.com/18242346/r/il/fd61f8/2933715225/il_570xN.2933715225_a913.jpg' },
-    { title: 'Movie 1', publishYear: 2021, imageUrl: 'https://i.etsystatic.com/18242346/r/il/fd61f8/2933715225/il_570xN.2933715225_a913.jpg' },
-  ]);
+  const [ cardData, setCardData ] = useState<any>();
   const [ page, setPage ] = useState(1);
+  const [ skip, setSkip ] = useState(0);
+  const [ currentPageCards, setCurrentPageCards ] = useState<any>();
   const cardsPerPage = 8;
-  const lastIndex = page * cardsPerPage;
-  const firstIndex = lastIndex - cardsPerPage;
-  const currentCards = cardData.slice(firstIndex, lastIndex);
 
-
+  let totalPages: any = null;
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(`https://jsonplaceholder.typicode.com/photos?_page=${page}&_limit=20`);
-        const data = await response.json();
-        // setCardData(data);
+        const response = await axios.get(`api/movies?take=${cardsPerPage}&skip=${skip}`);
+        setCardData(response.data.items);
+        const lastIndex = page * cardsPerPage;
+        const firstIndex = lastIndex - cardsPerPage;
+        setCurrentPageCards(cardData.slice(firstIndex, lastIndex));
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        totalPages = Math.ceil(response.data.total / cardsPerPage);
+
       } catch (error) {
-        console.error('Error fetching data:', error);
+        console.error('Error fetching movies:', error);
       }
     };
     fetchData();
@@ -57,14 +47,15 @@ export default function MovieList() {
     router.push('/signin');
   }
 
-  const totalPages = Math.ceil(cardData.length / cardsPerPage);
   const paginationItems = [];
-  for (let number = 1; number <= totalPages; number++) {
-    paginationItems.push(
-      <Pagination.Item key={ number } onClick={ () => handlePageChange(number) } className={ page === number ? 'active' : '' }>
-        { number }
-      </Pagination.Item>
-    );
+  if (totalPages) {
+    for (let number = 1; number <= totalPages; number++) {
+      paginationItems.push(
+        <Pagination.Item key={ number } onClick={ () => handlePageChange(number) } className={ page === number ? 'active' : '' }>
+          { number }
+        </Pagination.Item>
+      );
+    }
   }
 
   return (<>
@@ -80,11 +71,11 @@ export default function MovieList() {
         </div>
       </div>
       <Row xs={ 1 } md={ 4 } className="g-4">
-        { currentCards.map((card, index) => (
+        { currentPageCards ? currentPageCards.map((card: any, index: any) => (
           <Col key={ index }>
             <CustomCard { ...card } />
           </Col>
-        )) }
+        )) : null }
       </Row>
       <Container className='d-flex justify-content-center my-5 py-5'>
         <Pagination className='custom-pagination py-5 '>

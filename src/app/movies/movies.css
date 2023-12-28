@@ -1,0 +1,40 @@
+.custom-pagination .page-item {
+  padding: 0px 5px;
+}
+
+.custom-pagination .page-item .page-link {
+  background-color: #092C39 !important;
+  border: unset;
+  color: #fff;
+  font-family: Montserrat !important;
+  font-size: 16px !important;
+  font-weight: 700 !important;
+  line-height: 24px !important;
+  letter-spacing: 0em !important;
+  border-radius: 4px;
+  padding: 10px 15px;
+}
+
+.custom-pagination .page-item:first-child .page-link,
+.custom-pagination .page-item:last-child .page-link {
+  background-color: unset !important;
+}
+
+.custom-pagination .page-item.active .page-link {
+  background-color: #2BD17E !important;
+  color: #fff !important;
+}
+
+.movie-card:hover {
+  background: linear-gradient(0deg, rgba(255, 255, 255, 0.09) 0%, rgba(255, 255, 255, 0.09) 100%), rgba(8, 41, 53, 0.55);
+  backdrop-filter: blur(100px);
+
+}
+
+.movie-card {
+  border: unset;
+  flex-shrink: 0;
+  background: #092C39;
+  padding: 10px;
+  border-radius: 12px;
+}
