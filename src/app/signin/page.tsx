@@ -109,7 +109,7 @@ function Signin() {
       ) }
       <Container>
         <Row className='justify-content-center text-white'>
-          <Col md={ 3 } className='p-4 rounded'>
+          <Col md={ 3 } className='p-3'>
             <h1 className='text-center text-sign-in'>{ t('signin') }</h1>
             <Form onSubmit={ loginFormSubmit }>
               <Form.Group controlId="formBasicEmail" className='mb-3 input-email'>
@@ -125,7 +125,7 @@ function Signin() {
 
               <Form.Group controlId="formBasicPassword" className='mb-3'>
                 <Form.Control type="password"
-                  className={ `custom-input custom-input-bg border-0 ${errors.password && 'is-invalid border-1 border-danger'}` }
+                  className={ `custom-input custom-input-bg ${errors.password && 'is-invalid border-1 border-danger'}` }
                   placeholder={ t('password') }
                   onChange={ (e) => validatePassword(e.target.value) }
                   onBlur={ (e) => setPassword(e.target.value) }

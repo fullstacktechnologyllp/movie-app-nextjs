@@ -151,7 +151,7 @@ export default function MovieForm() {
       ) }
       <Container className='pt-5 text-white'>
         <div className="text-left pt-5 mb-5">
-          <span className='h1 text-white'>{ !isUpdate ? t('create_movie') : t('edit') } </span>
+          <span className={`text-white ${isMobile? 'h3' : 'h2'}`}>{ !isUpdate ? t('create_movie') : t('edit') } </span>
         </div>
         <Form onSubmit={ movieUpsert }>
           <Row className=''>

@@ -35,6 +35,9 @@
   border: unset;
   flex-shrink: 0;
   background: #092C39;
-  padding: 10px;
+  padding: 8px 8px 16px 8px;
   border-radius: 12px;
+  min-height: 504px;
+  gap: 16px;
+
 }
