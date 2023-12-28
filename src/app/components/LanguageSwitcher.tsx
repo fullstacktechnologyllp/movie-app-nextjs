@@ -1,8 +1,12 @@
-// src/components/LanguageSwitcher.tsx
 import React from 'react';
 import { useTranslation } from 'next-i18next';
+import { Dropdown } from 'react-bootstrap';
 
-const LanguageSwitcher: React.FC = () => {
+interface LanguageSwitcherProps {
+  className?: string; // Define className as an optional prop
+}
+
+const LanguageSwitcher: React.FC<LanguageSwitcherProps> = ({ className }) => {
   const { i18n } = useTranslation();
 
   const changeLanguage = (lng: string) => {
@@ -10,10 +14,16 @@ const LanguageSwitcher: React.FC = () => {
   };
 
   return (
-    <div>
-      <button onClick={() => changeLanguage('en')}>English</button>
-      <button onClick={() => changeLanguage('de')}>German</button>
-    </div>
+    <Dropdown className={className}>
+      <Dropdown.Toggle variant="secondary" id="languageDropdown">
+        Select Language
+      </Dropdown.Toggle>
+      <Dropdown.Menu>
+        <Dropdown.Item onClick={() => changeLanguage('en')}>English</Dropdown.Item>
+        <Dropdown.Item onClick={() => changeLanguage('de')}>German</Dropdown.Item>
+        {/* Add more Dropdown.Item elements for other languages if needed */}
+      </Dropdown.Menu>
+    </Dropdown>
   );
 };
 

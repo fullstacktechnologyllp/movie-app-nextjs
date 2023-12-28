@@ -1,18 +1,20 @@
 "use client";
 
 import React, { useEffect, useState } from 'react';
-import { Form, Button, Container, Row, Col } from 'react-bootstrap';
+import { Form, Button, Container, Row, Col, Spinner } from 'react-bootstrap';
 import { useRouter } from 'next/navigation';
 import axios from '../services/api';
 import { appWithTranslation, useTranslation } from 'next-i18next';
 import { toast } from 'react-toastify';
+import '../../i18n';
 
 function Signin() {
 
   useEffect(() => {
     const token = localStorage.getItem('token');
-    if (token !== '') {
-      // window.location.href = '/movies'
+    console.log(token);
+    if (token !== null) {
+      window.location.href = '/movies'
     }
   }, []);
 
@@ -20,6 +22,7 @@ function Signin() {
   const router = useRouter();
   const [ email, setEmail ] = useState('');
   const [ password, setPassword ] = useState('');
+  const [ loading, setLoading ] = useState(false);
 
   const navigateLink = (to: any) => {
     router.push(to);
@@ -29,6 +32,7 @@ function Signin() {
   const loginFormSubmit = async (event: any) => {
     event.preventDefault();
     try {
+      setLoading(true);
       const loginApi = await axios.post('/api/login', {
         email,
         password,
@@ -39,6 +43,8 @@ function Signin() {
     } catch (error: any) {
       notify(t(`errors.${error.message}`));
       console.error('Login failed:', error);
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -51,6 +57,13 @@ function Signin() {
         alignItems: 'center',
       } }
     >
+      { loading && (
+        <div className='vh-100 d-flex justify-content-center align-items-center z-3 overlay'>
+          <div className='spinner-container'>
+            <Spinner animation='border' variant='primary' />
+          </div>
+        </div>
+      ) }
       <Container>
         <Row className='justify-content-center text-white'>
           <Col md={ 3 } className='p-4 rounded'>

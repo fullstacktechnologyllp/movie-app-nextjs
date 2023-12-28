@@ -31,9 +31,9 @@ export default function MovieForm() {
   const previewStyles: React.CSSProperties = {
     width: '100%',
     height: '100%',
-    objectFit: 'contain',
     maxWidth: '373px',
     maxHeight: '400px',
+    borderRadius: '12px'
   };
 
   const [ previewUrl, setPreviewUrl ]: any = useState<string | ArrayBuffer | null>('');
@@ -114,8 +114,10 @@ export default function MovieForm() {
   return (
     <>
       { loading && (
-        <div className='vh-100 d-flex justify-content-center align-items-center z-3'>
-          <Spinner animation='border' variant='primary' />
+        <div className='vh-100 d-flex justify-content-center align-items-center z-3 overlay'>
+          <div className='spinner-container'>
+            <Spinner animation='border' variant='primary' />
+          </div>
         </div>
       ) }
       <Container className='pt-5 text-white'>
@@ -133,7 +135,7 @@ export default function MovieForm() {
                   accept="image/*"
                 />
                 { previewUrl && (
-                  <Image src={ previewUrl } alt="Preview" className='objectfit-cover' style={ previewStyles } />
+                  <Image src={ previewUrl } alt="Preview" className='object-fit-cover' style={ previewStyles } />
                 ) }
                 { !previewUrl && (<>
                   <div className="position-absolute top-50 start-50 translate-middle text-center d-grid small-body">

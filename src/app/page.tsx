@@ -19,8 +19,8 @@ function Home() {
   }, []);
 
   return (<>
+ { !isLoggedIn ? <><Signin /></> : <><Movies /></> }
 
-    { !isLoggedIn ? <><Signin /></> : <><Movies /></> }
   </>)
 }
 

@@ -11,6 +11,7 @@ import './movies.css';
 import Image from 'next/image';
 import { useTranslation } from 'next-i18next';
 import '../../i18n';
+import LanguageSwitcher from '../components/LanguageSwitcher';
 
 export default function Movies() {
   const router = useRouter();
@@ -40,13 +41,18 @@ export default function Movies() {
   }, [ page ]);
 
   const handlePageChange = (pageNumber: any) => setPage(pageNumber);
-  const handleLogout = () => router.push('/signin');
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    router.push('/signin');
+  }
 
   return (
     <>
       { loading && (
-        <div className='vh-100 d-flex justify-content-center align-items-center'>
-          <Spinner animation='border' variant='primary' />
+        <div className='vh-100 d-flex justify-content-center align-items-center z-3 overlay'>
+          <div className='spinner-container'>
+            <Spinner animation='border' variant='primary' />
+          </div>
         </div>
       ) }
       { !currentPageCards.length && !loading ? (
@@ -68,10 +74,13 @@ export default function Movies() {
             <h2 className="mb-3 mb-sm-0">{ t('my_movies') }
               <Image src={ plus } alt='add movies' width={ 32 } className='ms-3 cursor-pointer' onClick={ () => router.push('/movie-action/0') } />
             </h2>
-            <div onClick={ handleLogout } className='cursor-pointer'>
-              <span className='regular-body'>{ t('logout') }
-                <Image src={ logout } alt='add movies' width={ 18 } className='ms-3' />
-              </span>
+            <div className='d-flex'>
+              <LanguageSwitcher className="me-2"></LanguageSwitcher>
+              <div onClick={ handleLogout } className='cursor-pointer'>
+                <span className='regular-body'>{ t('logout') }
+                  <Image src={ logout } alt='add movies' width={ 18 } className='ms-3' />
+                </span>
+              </div>
             </div>
           </div>
           <Row xs={ 1 } md={ 4 } className="g-4">

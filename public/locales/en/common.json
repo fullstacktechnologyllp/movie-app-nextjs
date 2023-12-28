@@ -8,6 +8,7 @@
   "cancel":"Cancel",
   "create_movie":"Create a new movie",
   "movie_list_is_empty":"Your movie list is empty",
+  "add_new_movie":"Add a new movie",
   "errors": {
     "PLEASE_TRY_AGAIN":"Please try again.",
     "INVALID_PASSWORD":"Password is invalid."
