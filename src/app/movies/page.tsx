@@ -68,8 +68,9 @@ export default function Movies() {
             <h2>My movies
               <Image src={ plus } alt='add movies' width={ 32 } className='ms-3 cursor-pointer' onClick={ () => router.push('/movie-action/0') } />
             </h2>
-            <div>
-              <span className='regular-body'>Logout<Image src={ logout } alt='add movies' width={ 18 } className='ms-3 cursor-pointer' onClick={ handleLogout } /></span>
+            <div  onClick={ handleLogout } className=' cursor-pointer'>
+              <span className='regular-body'>Logout
+                <Image src={ logout } alt='add movies' width={ 18 } className='ms-3' /></span>
             </div>
           </div>
           <Row xs={ 1 } md={ 4 } className="g-4">

@@ -5,8 +5,6 @@ import { useEffect, useState } from 'react';
 import Signin from './signin/page';
 import Movies from './movies/page';
 import { appWithTranslation } from 'next-i18next'
-import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 import '../i18n';
 
 function Home() {
@@ -21,20 +19,8 @@ function Home() {
   }, []);
 
   return (<>
-   
-    { !isLoggedIn ? <> <ToastContainer position="bottom-left"
-      autoClose={ 3000 }
-      hideProgressBar={ true }
-      rtl={ false }
-      pauseOnFocusLoss={ false }
-      theme="dark"
-    /><Signin /></> : <> <ToastContainer position="bottom-left"
-    autoClose={ 3000 }
-    hideProgressBar={ true }
-    rtl={ false }
-    pauseOnFocusLoss={ false }
-    theme="dark"
-  /><Movies /></> }
+
+    { !isLoggedIn ? <><Signin /></> : <><Movies /></> }
   </>)
 }
 

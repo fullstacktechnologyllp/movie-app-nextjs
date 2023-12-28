@@ -3,5 +3,9 @@
   "errors": {
     "PLEASE_TRY_AGAIN":"Please try again.",
     "INVALID_PASSWORD":"Password is invalid."
+  },
+  "success":{
+    "movie_updated" :"Movie updated successfully",
+    "movie_created" :"Movie created successfully"
   }
 }

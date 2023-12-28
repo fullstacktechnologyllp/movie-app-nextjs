@@ -1,8 +1,7 @@
 "use client";
 import React, { useEffect } from 'react';
-import { Container, Row, Col, Form, Button, Image } from 'react-bootstrap';
+import { Container, Row, Col, Form, Button, Image, Spinner } from 'react-bootstrap';
 import { useState } from 'react';
-// import Image from 'next/image';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import './movie-action.css';
@@ -11,12 +10,14 @@ import { useRouter } from 'next/navigation';
 import { useParams } from 'next/navigation';
 import axios from '../../services/api';
 import { toast } from 'react-toastify';
-
+import { useTranslation } from 'next-i18next';
+import '../../../i18n';
 
 export default function MovieForm() {
   const router = useRouter();
   const { id } = useParams<any>();
   const isUpdate = id && id !== '0';
+  const { t } = useTranslation();
 
   const fileInputStyles: React.CSSProperties = {
     position: 'absolute',
@@ -39,6 +40,7 @@ export default function MovieForm() {
   const [ movieName, setMovieName ]: any = useState<string | ArrayBuffer | null>('');
   const [ selectedYear, setSelectedYear ] = useState<string | Date | any>(null);
   const [ uploadFile, setUploadFile ] = useState<string | Date | any>(null);
+  const [ loading, setLoading ] = useState(false);
 
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files && e.target.files[ 0 ];
@@ -55,37 +57,38 @@ export default function MovieForm() {
 
   useEffect(() => {
     if (isUpdate) {
-
       const fetchMovieDetails = async () => {
         try {
+          setLoading(true);
           const response = await axios.get(`/api/movies/${id}`);
           const { title, publishYear, imageUrl } = response.data.movie; // Adjust according to your API response structure
-          console.log(publishYear);
           setMovieName(title);
           setSelectedYear(new Date(publishYear, 0, 1));
-          console.log(selectedYear);
           setPreviewUrl(imageUrl); // Assuming this is the URL of the poster fetched from the API
         } catch (error) {
           console.error(error);
-          // Handle error or set default values for the form
+        } finally {
+          setLoading(false);
         }
       };
 
       fetchMovieDetails();
     }
   }, [ isUpdate ]);
+  const notifySuccess = (message: string) => toast.success(message);
+  const notifyError = (message: string) => toast.error(message);
 
 
   const movieUpsert = async (event: any) => {
     event.preventDefault();
-    const selectedDate = new Date(selectedYear);
-    const year: string = selectedDate.getFullYear().toString();
     try {
+      setLoading(true);
+      const selectedDate = new Date(selectedYear);
+      const year: string = selectedDate.getFullYear().toString();
       const formData = new FormData();
       formData.append("title", movieName);
       formData.append("publishYear", year);
-      formData.append("poster", uploadFile);
-      console.log(uploadFile);
+      uploadFile ? formData.append("poster", uploadFile) : null;
       const config = {
         headers: {
           "Content-Type": "multipart/form-data",
@@ -94,25 +97,30 @@ export default function MovieForm() {
       let upsertMovie;
       if (isUpdate) {
         upsertMovie = await axios.put(`/api/movies/${id}`, formData, config);
-        toast.success('Movie updated successfully.');
+        notifySuccess(t('movie_updated'));
         return router.push('/movies');
       }
       upsertMovie = await axios.post('/api/movies', formData, config);
-      toast.success('Movie created successfully.');
+      notifySuccess(t('movie_created'));
       return router.push('/movies');
     } catch (error: any) {
       console.error(error);
-      toast.error(error.message);
+      notifyError(error.message);
+    } finally {
+      setLoading(false);
     }
-
-
   }
 
   return (
     <>
+      { loading && (
+        <div className='vh-100 d-flex justify-content-center align-items-center z-3'>
+          <Spinner animation='border' variant='primary' />
+        </div>
+      ) }
       <Container className='pt-5 text-white'>
         <div className="text-left pt-5 mb-5">
-          <h2 className='text-white'>Create a new movie </h2>
+          <h2 className='text-white'>{ !isUpdate ? 'Create a new movie' : 'Edit' } </h2>
         </div>
         <Form onSubmit={ movieUpsert }>
           <Row>
@@ -129,7 +137,7 @@ export default function MovieForm() {
                 ) }
                 { !previewUrl && (<>
                   <div className="position-absolute top-50 start-50 translate-middle text-center d-grid small-body">
-                    <Image src={ fileDownload } alt='file-upload' className='m-auto mb-2' />
+                    <Image src={ fileDownload.src } alt='file-upload' className='m-auto mb-2' />
                     Drop an image here
                   </div>
                 </>) }
@@ -139,7 +147,7 @@ export default function MovieForm() {
             </Col>
             <Col md={ 6 }>
               <Form.Group controlId="movieName">
-                <Form.Control type="text" placeholder="Title" value={movieName} className='mb-3 w-75  custom-input'
+                <Form.Control type="text" placeholder="Title" value={ movieName } className='mb-3 w-75  custom-input'
                   onChange={ (event) => setMovieName(event.target.value) } />
               </Form.Group>
               <Form.Group controlId="publishYear" className='mb-5'>
