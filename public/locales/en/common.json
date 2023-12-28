@@ -1,11 +1,19 @@
 {
   "signin": "Sign in",
+  "my_movies": "My movies",
+  "logout":"Logout",
+  "edit":"Edit",
+  "submit":"Submit",
+  "login":"Login",
+  "cancel":"Cancel",
+  "create_movie":"Create a new movie",
+  "movie_list_is_empty":"Your movie list is empty",
   "errors": {
     "PLEASE_TRY_AGAIN":"Please try again.",
     "INVALID_PASSWORD":"Password is invalid."
   },
   "success":{
-    "movie_updated" :"Movie updated successfully",
-    "movie_created" :"Movie created successfully"
+    "movie_updated" :"Movie updated successfully.",
+    "movie_created" :"Movie created successfully."
   }
 }

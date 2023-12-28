@@ -1,7 +1,20 @@
 {
   "signin": "Anmelden",
+  "my_movies": "Meine Filme",
+  "logout": "Ausloggen",
+  "edit": "Bearbeiten",
+  "submit": "Einreichen",
+  "login": "Anmeldung",
+  "cancel": "Stornieren",
+  "create_movie": "Erstellen Sie einen neuen Film",
+  "movie_list_is_empty":"Ihre Filmliste ist leer",
+  "add_new_movie":"Fügen Sie einen neuen Film hinzu",
   "errors": {
-    "PLEASE_TRY_AGAIN":"Bitte versuche es erneut.",
+    "PLEASE_TRY_AGAIN": "Bitte versuche es erneut.",
     "INVALID_PASSWORD": "Passwort ist ungültig."
+  },
+  "success": {
+    "movie_updated": "Film erfolgreich aktualisiert.",
+    "movie_created": "Film erfolgreich erstellt."
   }
 }

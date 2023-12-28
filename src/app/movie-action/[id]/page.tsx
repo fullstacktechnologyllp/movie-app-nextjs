@@ -97,11 +97,11 @@ export default function MovieForm() {
       let upsertMovie;
       if (isUpdate) {
         upsertMovie = await axios.put(`/api/movies/${id}`, formData, config);
-        notifySuccess(t('movie_updated'));
+        notifySuccess(t('success.movie_updated'));
         return router.push('/movies');
       }
       upsertMovie = await axios.post('/api/movies', formData, config);
-      notifySuccess(t('movie_created'));
+      notifySuccess(t('success.movie_created'));
       return router.push('/movies');
     } catch (error: any) {
       console.error(error);

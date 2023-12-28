@@ -9,7 +9,8 @@ import logout from '../../assets/images/logout.svg';
 import CustomCard from '../movie-list/movie-card';
 import './movies.css';
 import Image from 'next/image';
-import { useLoadingContext } from '../components/loadingContext';
+import { useTranslation } from 'next-i18next';
+import '../../i18n';
 
 export default function Movies() {
   const router = useRouter();
@@ -18,6 +19,7 @@ export default function Movies() {
   const cardsPerPage = 8;
   const [ totalPages, setTotalPages ] = useState(0);
   const [ loading, setLoading ] = useState(false);
+  const { t } = useTranslation();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -33,7 +35,6 @@ export default function Movies() {
       } finally {
         setLoading(false);
       }
-
     };
     fetchData();
   }, [ page ]);
@@ -48,15 +49,14 @@ export default function Movies() {
           <Spinner animation='border' variant='primary' />
         </div>
       ) }
-
       { !currentPageCards.length && !loading ? (
         <div className='vh-100 d-flex justify-content-center align-items-center'>
           <Container>
             <Row className='justify-content-center text-white'>
               <Col md={ 6 } className='p-4 rounded'>
-                <h3 className='text-center mb-4'>Your movie list is empty</h3>
+                <h3 className='text-center mb-4'>{ t('movie_list_is_empty') }</h3>
                 <Button onClick={ () => router.push('/movie-action/0') } variant="primary" type="button" className='d-flex m-auto btn-primary-custom py-3 px-4 regular-body'>
-                  Add a new movie
+                  { t('add_new_movie') }
                 </Button>
               </Col>
             </Row>
@@ -64,13 +64,14 @@ export default function Movies() {
         </div>
       ) : (
         <Container className='pt-5 text-white pb-5'>
-          <div className="d-flex justify-content-between align-items-center pt-5 mb-5">
-            <h2>My movies
+          <div className="d-flex flex-column flex-sm-row justify-content-between align-items-center pt-5 mb-3 mb-sm-5">
+            <h2 className="mb-3 mb-sm-0">{ t('my_movies') }
               <Image src={ plus } alt='add movies' width={ 32 } className='ms-3 cursor-pointer' onClick={ () => router.push('/movie-action/0') } />
             </h2>
-            <div  onClick={ handleLogout } className=' cursor-pointer'>
-              <span className='regular-body'>Logout
-                <Image src={ logout } alt='add movies' width={ 18 } className='ms-3' /></span>
+            <div onClick={ handleLogout } className='cursor-pointer'>
+              <span className='regular-body'>{ t('logout') }
+                <Image src={ logout } alt='add movies' width={ 18 } className='ms-3' />
+              </span>
             </div>
           </div>
           <Row xs={ 1 } md={ 4 } className="g-4">
