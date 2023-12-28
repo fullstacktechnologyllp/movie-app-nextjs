@@ -86,7 +86,6 @@ const update = async (req: any, res: any) => {
         userId: userId
     };
 
-    console.log('fileName:', fileName);
     if (fileName) {
         const ext = fileName.substring(fileName.indexOf('.') + 1);
         const s3ObjectName = `${userId}_${movie.id}.${ext}`;
