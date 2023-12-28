@@ -17,7 +17,7 @@ export default function Movies() {
   const [ page, setPage ] = useState(1);
   const cardsPerPage = 8;
   const [ totalPages, setTotalPages ] = useState(0);
-  const [loading, setLoading] = useState(false);
+  const [ loading, setLoading ] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {

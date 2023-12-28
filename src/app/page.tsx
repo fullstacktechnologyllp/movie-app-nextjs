@@ -21,14 +21,20 @@ function Home() {
   }, []);
 
   return (<>
-    <ToastContainer position="bottom-left"
+   
+    { !isLoggedIn ? <> <ToastContainer position="bottom-left"
       autoClose={ 3000 }
       hideProgressBar={ true }
       rtl={ false }
       pauseOnFocusLoss={ false }
       theme="dark"
-    />
-    { !isLoggedIn ? <><Signin /></> : <><Movies /></> }
+    /><Signin /></> : <> <ToastContainer position="bottom-left"
+    autoClose={ 3000 }
+    hideProgressBar={ true }
+    rtl={ false }
+    pauseOnFocusLoss={ false }
+    theme="dark"
+  /><Movies /></> }
   </>)
 }
 

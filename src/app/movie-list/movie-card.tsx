@@ -1,10 +1,13 @@
 "use client"
+import { useRouter } from 'next/navigation';
 import React from 'react';
 import { Card } from 'react-bootstrap';
 
-export default function CustomCard({ imageUrl, title, publishYear }: any) {
+export default function CustomCard({ imageUrl, title, publishYear, ...restParam }: any) {
+  
+  const router = useRouter();
   return (
-    <Card className='movie-card w-100 h-100'>
+    <Card className='movie-card w-100 h-100 cursor-pointer' onClick={ () => router.push(`/movie-action/${restParam.id}`) }>
       <Card.Img
         variant="top"
         src={ imageUrl }

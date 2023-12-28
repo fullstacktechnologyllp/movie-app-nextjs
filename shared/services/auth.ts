@@ -14,7 +14,7 @@ class AuthService {
                 throw new ErrorHandler(403, ERROR_RESPONSES.AUTH_TOKEN_IS_REQUIRED);
             }
 
-            console.log(token);
+            // console.log(token);
 
             const payload = decode(token);
 

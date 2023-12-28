@@ -1,8 +1,8 @@
 "use client";
 import React, { useEffect } from 'react';
-import { Container, Row, Col, Form, Button } from 'react-bootstrap';
+import { Container, Row, Col, Form, Button, Image } from 'react-bootstrap';
 import { useState } from 'react';
-import Image from 'next/image';
+// import Image from 'next/image';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import './movie-action.css';
@@ -31,6 +31,8 @@ export default function MovieForm() {
     width: '100%',
     height: '100%',
     objectFit: 'contain',
+    maxWidth: '373px',
+    maxHeight: '400px',
   };
 
   const [ previewUrl, setPreviewUrl ]: any = useState<string | ArrayBuffer | null>('');
@@ -50,22 +52,25 @@ export default function MovieForm() {
     }
   };
 
-  const fetchMovieDetails = async () => {
-    try {
-      const response = await axios.get(`/api/movies/${id}`);
-      const { title, publishYear, poster } = response.data; // Adjust according to your API response structure
-
-      setMovieName(title);
-      setSelectedYear(new Date(publishYear));
-      setPreviewUrl(poster); // Assuming this is the URL of the poster fetched from the API
-    } catch (error) {
-      console.error(error);
-      // Handle error or set default values for the form
-    }
-  };
 
   useEffect(() => {
     if (isUpdate) {
+
+      const fetchMovieDetails = async () => {
+        try {
+          const response = await axios.get(`/api/movies/${id}`);
+          const { title, publishYear, imageUrl } = response.data.movie; // Adjust according to your API response structure
+          console.log(publishYear);
+          setMovieName(title);
+          setSelectedYear(new Date(publishYear));
+          console.log(selectedYear);
+          setPreviewUrl(imageUrl); // Assuming this is the URL of the poster fetched from the API
+        } catch (error) {
+          console.error(error);
+          // Handle error or set default values for the form
+        }
+      };
+
       fetchMovieDetails();
     }
   }, [ isUpdate ]);
@@ -80,7 +85,7 @@ export default function MovieForm() {
       formData.append("title", movieName);
       formData.append("publishYear", year);
       formData.append("poster", uploadFile);
-
+      console.log(uploadFile);
       const config = {
         headers: {
           "Content-Type": "multipart/form-data",
@@ -120,7 +125,7 @@ export default function MovieForm() {
                   accept="image/*"
                 />
                 { previewUrl && (
-                  <Image src={ previewUrl } alt="Preview" layout="fill" objectFit="cover" style={ previewStyles } />
+                  <Image src={ previewUrl } alt="Preview" className='objectfit-cover' style={ previewStyles } />
                 ) }
                 { !previewUrl && (<>
                   <div className="position-absolute top-50 start-50 translate-middle text-center d-grid small-body">
@@ -134,7 +139,7 @@ export default function MovieForm() {
             </Col>
             <Col md={ 6 }>
               <Form.Group controlId="movieName">
-                <Form.Control type="text" placeholder="Title" className='mb-3 w-75  custom-input'
+                <Form.Control type="text" placeholder="Title" value={movieName} className='mb-3 w-75  custom-input'
                   onChange={ (event) => setMovieName(event.target.value) } />
               </Form.Group>
               <Form.Group controlId="publishYear" className='mb-5'>

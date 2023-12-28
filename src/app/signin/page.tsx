@@ -84,4 +84,4 @@ function Signin() {
   );
 }
 
-export default appWithTranslation(Signin);
+export default appWithTranslation<any>(Signin);

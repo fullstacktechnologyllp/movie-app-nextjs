@@ -2,19 +2,33 @@
 import axios, { AxiosError } from 'axios';
 
 
-const setAuthToken = () => {
-  if (typeof window !== 'undefined') {
-    const token = localStorage.getItem('token');
-    if (token) {
-      axios.defaults.headers.common[ 'Authorization' ] = `Bearer ${token}`;
-    } else {
-      delete axios.defaults.headers.common[ 'Authorization' ];
-    }
-  }
-};
+// const setAuthToken = () => {
+//   if (typeof window !== 'undefined') {
+//     const token = localStorage.getItem('token');
+//     if (token) {
+//       axios.defaults.headers.common[ 'Authorization' ] = `Bearer ${token}`;
+//     } else {
+//       delete axios.defaults.headers.common[ 'Authorization' ];
+//     }
+//   }
+// };
 
-// Apply token to headers on initial load
-setAuthToken();
+// // Apply token to headers on initial load
+// setAuthToken();
+
+axios.interceptors.request.use(
+  config => {
+    const token = localStorage.getItem('token')
+    if (token) {
+      config.headers['Authorization'] = 'Bearer ' + token
+    }
+    // config.headers['Content-Type'] = 'application/json';
+    return config
+  },
+  error => {
+    Promise.reject(error)
+  }
+);
 
 axios.interceptors.response.use(
   (response) => {
