@@ -41,7 +41,11 @@ export default function MovieForm() {
   const [ selectedYear, setSelectedYear ] = useState<string | Date | any>(null);
   const [ uploadFile, setUploadFile ] = useState<string | Date | any>(null);
   const [ loading, setLoading ] = useState(false);
-
+  const [ errors, setErrors ] = useState({
+    movieName: '',
+    selectedYear: '',
+    poster: '',
+  });
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files && e.target.files[ 0 ];
     setUploadFile(file);
@@ -75,19 +79,35 @@ export default function MovieForm() {
       fetchMovieDetails();
     }
   }, [ isUpdate ]);
+
   const notifySuccess = (message: string) => toast.success(message);
   const notifyError = (message: string) => toast.error(message);
 
+  const validateForm = () => {
+    const newErrors = {
+      movieName: movieName.trim() ? '' : 'Movie name is required',
+      selectedYear: selectedYear ? '' : 'Please select a year',
+      poster: isUpdate || uploadFile ? '' : 'Please upload a poster',
+    };
+
+    setErrors(newErrors);
+    return Object.values(newErrors).every((error) => error === '');
+  };
 
   const movieUpsert = async (event: any) => {
     event.preventDefault();
     try {
+      const formIsValid = validateForm();
+      console.log(errors)
+      if (!formIsValid) {
+        return;
+      }
       setLoading(true);
       const selectedDate = new Date(selectedYear);
       const year: string = selectedDate.getFullYear().toString();
       const formData = new FormData();
       formData.append("title", movieName);
-      formData.append("publishYear", year);
+      selectedYear !== null ? formData.append("publishYear", year) : null;
       uploadFile ? formData.append("poster", uploadFile) : null;
       const config = {
         headers: {
@@ -105,7 +125,7 @@ export default function MovieForm() {
       return router.push('/movies');
     } catch (error: any) {
       console.error(error);
-      notifyError(error.message);
+      notifyError(t(`errors.${error.message}`));
     } finally {
       setLoading(false);
     }
@@ -122,7 +142,7 @@ export default function MovieForm() {
       ) }
       <Container className='pt-5 text-white'>
         <div className="text-left pt-5 mb-5">
-          <h2 className='text-white'>{ !isUpdate ? 'Create a new movie' : 'Edit' } </h2>
+          <h2 className='text-white'>{ !isUpdate ? t('create_movie') : t('edit') } </h2>
         </div>
         <Form onSubmit={ movieUpsert }>
           <Row>
@@ -140,35 +160,43 @@ export default function MovieForm() {
                 { !previewUrl && (<>
                   <div className="position-absolute top-50 start-50 translate-middle text-center d-grid small-body">
                     <Image src={ fileDownload.src } alt='file-upload' className='m-auto mb-2' />
-                    Drop an image here
+                    { t('drop_image_here') }
+                    { errors.poster && <div className="invalid-feedback d-block">{ errors.poster }</div> }
                   </div>
                 </>) }
               </div>
+
             </Col>
             <Col md={ 1 }>
             </Col>
             <Col md={ 6 }>
+
               <Form.Group controlId="movieName">
-                <Form.Control type="text" placeholder="Title" value={ movieName } className='mb-3 w-75  custom-input'
+                <Form.Control type="text" placeholder={ t('title') } value={ movieName }
+                  className={ `mb-3 w-75 custom-input ${errors.movieName && 'is-invalid border-1 border-danger'}` }
                   onChange={ (event) => setMovieName(event.target.value) } />
+                { errors.movieName && <div className="invalid-feedback d-block mt--2">{ errors.movieName }</div> }
+
               </Form.Group>
               <Form.Group controlId="publishYear" className='mb-5'>
                 <DatePicker
                   selected={ selectedYear }
                   onChange={ (date: Date | null) => setSelectedYear(date) }
-                  className="form-control"
+                  className={ `form-control ${errors.selectedYear && 'is-invalid border-1 border-danger'}` }
                   dateFormat="yyyy"
                   showYearPicker
-                  placeholderText="Publishing year"
+                  placeholderText={ t('publish_year') }
                 />
+                { errors.selectedYear && <div className="invalid-feedback d-block">{ errors.selectedYear }</div> }
+
               </Form.Group>
               <div className="mb-2">
                 <Button variant="primary" onClick={ () => router.push('/movies') } type="button"
                   className='me-lg-3 btn btn-md regular-body btn-transparent'>
-                  Cancel
+                  { t('cancel') }
                 </Button>
                 <Button className='btn-primary-custom btn btn-md regular-body' type="submit">
-                  Submit
+                  { t('submit') }
                 </Button>
               </div>
             </Col>

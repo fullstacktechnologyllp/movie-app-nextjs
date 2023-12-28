@@ -92,10 +92,10 @@ export default function Movies() {
           </Row>
           <Container className='d-flex justify-content-center my-5 py-5'>
             <Pagination className='custom-pagination py-5'>
-              <Pagination.Prev onClick={ () => handlePageChange(page - 1) } disabled={ page === 1 }>Prev</Pagination.Prev>
+              <Pagination.Prev onClick={ () => handlePageChange(page - 1) } disabled={ page === 1 }>{ t('prev') }</Pagination.Prev>
               { Array.from({ length: totalPages }, (_, index) => index + 1).map((number) =>
                 <Pagination.Item key={ number } active={ number === page } onClick={ () => handlePageChange(number) }>{ number }</Pagination.Item>) }
-              <Pagination.Next onClick={ () => handlePageChange(page + 1) } disabled={ page === totalPages }>Next</Pagination.Next>
+              <Pagination.Next onClick={ () => handlePageChange(page + 1) } disabled={ page === totalPages }>{ t('next') }</Pagination.Next>
             </Pagination>
           </Container>
         </Container>

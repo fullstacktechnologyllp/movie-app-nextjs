@@ -1,27 +1,44 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'next-i18next';
 import { Dropdown } from 'react-bootstrap';
 
 interface LanguageSwitcherProps {
-  className?: string; // Define className as an optional prop
+  className?: string;
 }
 
 const LanguageSwitcher: React.FC<LanguageSwitcherProps> = ({ className }) => {
   const { i18n } = useTranslation();
+  const [ selectedLanguage, setSelectedLanguage ] = useState<string>('');
 
   const changeLanguage = (lng: string) => {
     i18n.changeLanguage(lng);
+    localStorage.setItem('selectedLanguage', lng); // Save selected language to localStorage
+    setSelectedLanguage(lng); // Update selected language state
   };
 
+  useEffect(() => {
+    const selectedLanguage = localStorage.getItem('selectedLanguage');
+    if (selectedLanguage) {
+      changeLanguage(selectedLanguage);
+    }
+  }, []);
+
+  useEffect(() => {
+    const storedLanguage = localStorage.getItem('selectedLanguage');
+    if (storedLanguage) {
+      setSelectedLanguage(storedLanguage);
+    }
+  }, []);
+
   return (
-    <Dropdown className={className}>
+    <Dropdown className={ className }>
       <Dropdown.Toggle variant="secondary" id="languageDropdown">
-        Select Language
+        { selectedLanguage === 'en' ? 'English' : selectedLanguage === 'de' ? 'German' : 'Select Language' }
       </Dropdown.Toggle>
       <Dropdown.Menu>
-        <Dropdown.Item onClick={() => changeLanguage('en')}>English</Dropdown.Item>
-        <Dropdown.Item onClick={() => changeLanguage('de')}>German</Dropdown.Item>
-        {/* Add more Dropdown.Item elements for other languages if needed */}
+        <Dropdown.Item onClick={ () => changeLanguage('en') }>English</Dropdown.Item>
+        <Dropdown.Item onClick={ () => changeLanguage('de') }>German</Dropdown.Item>
+        {/* Add more Dropdown.Item elements for other languages if needed */ }
       </Dropdown.Menu>
     </Dropdown>
   );

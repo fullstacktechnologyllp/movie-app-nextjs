@@ -292,3 +292,7 @@ h6 {
   z-index: 10000;
   /* Ensure spinner stays on top of the overlay */
 }
+
+.mt--2{
+  margin-top: -0.8rem !important;
+}

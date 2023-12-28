@@ -9,9 +9,25 @@
   "create_movie": "Erstellen Sie einen neuen Film",
   "movie_list_is_empty":"Ihre Filmliste ist leer",
   "add_new_movie":"Fügen Sie einen neuen Film hinzu",
+  "title":"Titel",
+  "publish_year":"Jahr veröffentlichen",
+  "drop_image_here":"Lassen Sie hier ein Bild fallen",
+  "prev":"Vorläufig",
+  "next":"Nächste",
+  "remember_me":"Remember me",
+  "email":"Email",
+  "password":"Passwort",
   "errors": {
     "PLEASE_TRY_AGAIN": "Bitte versuche es erneut.",
-    "INVALID_PASSWORD": "Passwort ist ungültig."
+    "INVALID_PASSWORD": "Passwort ist ungültig.",
+    "MOVIE_TITLE_IS_REQUIRED": "Filmtitel ist erforderlich.",
+    "MOVIE_POSTER_IS_REQUIRED": "Filmplakat ist erforderlich.",
+    "MOVIE_PUBLISH_YEAR_IS_REQUIRED": "Filmveröffentlichung ist erforderlich.",
+    "EMAIL_IS_REQUIRED": "E-Mail ist erforderlich.",
+    "PASSWORD_IS_REQUIRED": "Passwort wird benötigt.",
+    "enter_valid_email_address":"Bitte geben Sie eine gültige E-Mail-Adresse ein",
+    "enter_valid_password":"Bitte geben Sie ein gültiges Passwort ein",
+    "USER_NOT_FOUND":"Benutzer, der mit dieser E -Mail nicht zu finden ist"
   },
   "success": {
     "movie_updated": "Film erfolgreich aktualisiert.",

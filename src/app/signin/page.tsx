@@ -23,14 +23,40 @@ function Signin() {
   const [ email, setEmail ] = useState('');
   const [ password, setPassword ] = useState('');
   const [ loading, setLoading ] = useState(false);
+  const [ errors, setErrors ] = useState({ email: '', password: '' });
 
   const navigateLink = (to: any) => {
     router.push(to);
   }
   const notify = (message: string) => toast.error(message);
 
+
+  const validateForm = () => {
+    let valid = true;
+    console.log(password);
+    const newErrors = { email: '', password: '' };
+
+    // Email validation
+    if (!email || !email.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i)) {
+      newErrors.email = t('errors.enter_valid_email_address');
+      valid = false;
+    }
+
+    // Password validation
+    if (!password) {
+      newErrors.password = t('errors.enter_valid_password');;
+      valid = false;
+    }
+
+    setErrors(newErrors);
+    return valid;
+  };
+
   const loginFormSubmit = async (event: any) => {
     event.preventDefault();
+    if (!validateForm()) {
+      return false;
+    }
     try {
       setLoading(true);
       const loginApi = await axios.post('/api/login', {
@@ -46,6 +72,7 @@ function Signin() {
     } finally {
       setLoading(false);
     }
+
   }
 
   return (
@@ -70,24 +97,31 @@ function Signin() {
             <h1 className='text-center mb-4'>{ t('signin') }</h1>
             <Form onSubmit={ loginFormSubmit }>
               <Form.Group controlId="formBasicEmail" className='mb-3'>
-                <Form.Control type="email" className='custom-input custom-input-bg' placeholder="Email"
+                <Form.Control type="email"
+                  className={ `custom-input custom-input-bg ${errors.email && 'is-invalid border-1 border-danger'}` }
+                  placeholder={ t('email') }
                   value={ email }
                   onChange={ (e) => setEmail(e.target.value) }
                 />
+                { errors.email && <div className="invalid-feedback">{ errors.email }</div> }
+
               </Form.Group>
 
               <Form.Group controlId="formBasicPassword" className='mb-3'>
-                <Form.Control type="password" className='custom-input custom-input-bg' placeholder="Password"
+                <Form.Control type="password"
+                  className={ `custom-input custom-input-bg ${errors.password && 'is-invalid border-1 border-danger'}` }
+                  placeholder={ t('password') }
                   onChange={ (e) => setPassword(e.target.value) }
                 />
+                { errors.password && <div className="invalid-feedback">{ errors.password }</div> }
               </Form.Group>
 
               <Form.Group controlId="formBasicCheckbox" className='d-flex justify-content-center mb-3'>
-                <Form.Check type="checkbox" label="Remember me" />
+                <Form.Check type="checkbox" label={ t('remember_me') } />
               </Form.Group>
 
               <Button variant="primary" type="submit" className='w-100 btn-primary-custom regular-body' size='lg'>
-                Login
+                { t('login') }
               </Button>
             </Form>
           </Col>
