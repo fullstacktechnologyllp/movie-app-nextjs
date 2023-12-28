@@ -62,7 +62,7 @@ export default function MovieForm() {
           const { title, publishYear, imageUrl } = response.data.movie; // Adjust according to your API response structure
           console.log(publishYear);
           setMovieName(title);
-          setSelectedYear(new Date(publishYear));
+          setSelectedYear(new Date(publishYear, 0, 1));
           console.log(selectedYear);
           setPreviewUrl(imageUrl); // Assuming this is the URL of the poster fetched from the API
         } catch (error) {
