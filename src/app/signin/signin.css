@@ -11,5 +11,5 @@
 }
 
 .is-invalid {
-  border: 1px solid #EB5757;
+  border: 1px solid #EB5757 !important;
 }

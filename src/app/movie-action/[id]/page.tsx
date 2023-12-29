@@ -192,8 +192,10 @@ export default function MovieForm() {
               <Col md={ 6 } className='mt-4 mt-lg-0'>
                 <Form.Group controlId="movieName">
                   <Form.Control type="text" placeholder={ t('title') } value={ movieName }
-                    className={ `mb-3 ${isMobile ? 'w-100' : 'w-75'} custom-input ${errors.movieName && 'is-invalid border-1 border-danger'}` }
-                    onChange={ (event: any) => setMovieName(event.target.value) } />
+                    className={ `mb-3 ${isMobile ? 'w-100' : 'w-75'} custom-input ${errors.movieName && 'is-invalid'}` }
+                    onChange={ (event: any) => setMovieName(event.target.value) }
+                    onBlur={ (event: any) => validateForm() }
+                     />
                   { errors.movieName && <div className="invalid-feedback d-block mt--2">{ errors.movieName }</div> }
 
                 </Form.Group>
@@ -201,7 +203,8 @@ export default function MovieForm() {
                   <DatePicker
                     selected={ selectedYear }
                     onChange={ (date: Date | null) => setSelectedYear(date) }
-                    className={ `form-control ${errors.selectedYear && 'is-invalid border-1 border-danger'}` }
+                    onBlur={ (event: any) => validateForm() }
+                    className={ `form-control ${errors.selectedYear && 'is-invalid'}` }
                     wrapperClassName={ `${isMobile ? 'w-100' : 'w-50'}` }
                     dateFormat="yyyy"
                     showYearPicker
