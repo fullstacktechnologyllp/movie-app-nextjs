@@ -11,8 +11,7 @@ export default function CustomCard({ imageUrl, title, publishYear, ...restParam 
       <Card.Img
         variant="top"
         src={ imageUrl }
-        className='w-100 h-100 object-fit-cover'
-        style={ { borderRadius: '12px' } }
+        className='w-100 h-100 object-fit-cover border-radius-12'
       />
       <Card.Body className='text-white d-flex p-0 flex-column'>
         <Card.Title ><span className='large-body'>{ title }</span></Card.Title>

@@ -12,7 +12,7 @@
   line-height: 24px !important;
   letter-spacing: 0em !important;
   border-radius: 4px;
-  padding: 10px 15px;
+  padding: 4px 13px;
 }
 
 .custom-pagination .page-item:first-child .page-link,
@@ -52,6 +52,10 @@
   margin-bottom: 16px;
 }
 
+
+.logout-icon, .plus-icon{
+  padding-left: 12px;
+}
 .card-title,
 .card-text {
   margin-left: 8px;
@@ -72,14 +76,17 @@
   --bs-gutter-x: 24px;
 }
 
-.movie-head {
-  padding: 120px;
+@media (min-width:1250px) {
+  .movie-head {
+    padding: 120px !important;
+  }
+
+  .custom-spacing {
+    padding: 0 120px !important;
+    padding-bottom: 120px !important;
+  }
 }
 
-.custom-spacing {
-  padding: 0 120px;
-  padding-bottom: 120px;
-}
 
 .pagination-padding {
   padding-bottom: 220px;

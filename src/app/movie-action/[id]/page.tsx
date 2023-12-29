@@ -24,27 +24,6 @@ export default function MovieForm() {
   const [ isMobile, setIsMobile ] = useState(false);
   const isMobileQuery = useMediaQuery({ maxWidth: 767 });
 
-  const fileInputStyles: React.CSSProperties = {
-    position: 'absolute',
-    width: '100%',
-    height: '100%',
-    top: 0,
-    left: 0,
-    opacity: 0,
-    cursor: 'pointer',
-  };
-  const previewStyles: React.CSSProperties = {
-    // width: '100%',
-    // height: '100%',
-    // maxWidth: '373px',
-    // maxHeight: '400px',
-    width: '100%',
-    height: '100%',
-    maxWidth:'473px',
-    maxHeight:'504px',
-    borderRadius: '12px'
-  };
-
   const [ previewUrl, setPreviewUrl ]: any = useState<string | ArrayBuffer | null>('');
   const [ movieName, setMovieName ]: any = useState<string | ArrayBuffer | null>('');
   const [ selectedYear, setSelectedYear ] = useState<string | Date | any>(null);
@@ -55,6 +34,10 @@ export default function MovieForm() {
     selectedYear: '',
     poster: '',
   });
+
+  /*
+  * Instant File image preview 
+  */
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files && e.target.files[ 0 ];
     setUploadFile(file);
@@ -74,10 +57,10 @@ export default function MovieForm() {
         try {
           setLoading(true);
           const response = await axios.get(`/api/movies/${id}`);
-          const { title, publishYear, imageUrl } = response.data.movie; // Adjust according to your API response structure
+          const { title, publishYear, imageUrl } = response.data.movie;
           setMovieName(title);
           setSelectedYear(new Date(publishYear, 0, 1));
-          setPreviewUrl(imageUrl); // Assuming this is the URL of the poster fetched from the API
+          setPreviewUrl(imageUrl);
         } catch (error) {
           console.error(error);
         } finally {
@@ -187,15 +170,7 @@ export default function MovieForm() {
 
   return (
     <>
-      <div style={ {
-        backgroundImage: `url(${signinImage.src})`,
-        backgroundSize: '100%',
-        height: '100%',
-        minHeight: '100vh',
-        backgroundColor: '#093545',
-        backgroundRepeat: 'no-repeat',
-        backgroundPosition: 'bottom',
-      } }>
+      <div className='global-image-container'>
         { loading && (
           <div className='vh-100 d-flex justify-content-center align-items-center z-3 overlay'>
             <div className='spinner-container'>
@@ -203,22 +178,25 @@ export default function MovieForm() {
             </div>
           </div>
         ) }
-        <div className='text-white custom-container-space'>
+        <div className={ `text-white p-5 custom-container-space ${isMobile ? 'container w-100' : ''}` }>
           <div className="text-left">
             <span className={ `text-white ${isMobile ? 'h3' : 'h2'}` }>{ !isUpdate ? t('create_movie') : t('edit') } </span>
           </div>
-          <Form onSubmit={ movieUpsert } className='form-space'>
+          <Form onSubmit={ movieUpsert } className={ `form-space ${isMobile ? 'margin-t-80' : ''}` }>
             <Row className='g-0'>
               <Col md={ 6 } >
                 <div className="position-relative upload-box">
                   <input
                     type="file"
-                    style={ fileInputStyles }
+                    className='upload-input'
+                    // style={ fileInputStyles }
                     onChange={ handleFileUpload }
                     accept="image/*"
                   />
                   { previewUrl && (
-                    <Image src={ previewUrl } alt="Preview" className='object-fit-cover' style={ previewStyles } />
+                    <Image src={ previewUrl } alt="Preview" className='object-fit-cover preview-image'
+                    // style={ previewStyles }
+                    />
                   ) }
                   { !previewUrl && (<>
                     <div className="position-absolute top-50 start-50 translate-middle text-center d-grid small-body">
@@ -233,21 +211,21 @@ export default function MovieForm() {
               {/* <Col md={ 2 } className='p-0 m-0'>
               </Col> */}
               <Col md={ 6 } className=''>
-                <Form.Group controlId="movieName">
+                <Form.Group controlId="movieName" className='bottom-24'>
                   <Form.Control type="text" placeholder={ t('title') } value={ movieName }
-                    className={ `bottom-24 ${isMobile ? 'w-100' : ''} movie-title custom-input ${errors.movieName && 'is-invalid'}` }
+                    className={ `${isMobile ? 'w-100' : ''} my-3 movie-title custom-input ${errors.movieName && 'is-invalid'}` }
                     onChange={ (event: any) => setMovieName(event.target.value) }
                     onBlur={ (event: any) => validateMovieName() }
                   />
                   { errors.movieName && <div className="invalid-feedback d-block mt--2">{ errors.movieName }</div> }
 
                 </Form.Group>
-                <Form.Group controlId="publishYear" className=''>
+                <Form.Group controlId="publishYear" className='publish-year'>
                   <DatePicker
                     selected={ selectedYear }
                     onChange={ (date: Date | null) => setSelectedYear(date) }
                     onBlur={ (event: any) => validateSelectedYear() }
-                    className={ `form-control publish-year bottom-24 ${errors.selectedYear && 'is-invalid'}` }
+                    className={ `form-control  mb-0  ${errors.selectedYear && 'is-invalid'}` }
                     wrapperClassName={ `${isMobile ? 'w-100' : ''}` }
                     dateFormat="yyyy"
                     showYearPicker
@@ -256,7 +234,7 @@ export default function MovieForm() {
                   { errors.selectedYear && <div className="invalid-feedback d-block">{ errors.selectedYear }</div> }
 
                 </Form.Group>
-                <div className={ `${isMobile ? 'd-flex justify-content-between' : ''}` }>
+                <div className={ `${isMobile ? 'd-flex justify-content-between  w-100' : ''}` }>
                   <Button variant="primary" onClick={ () => router.push('/movies') } type="button"
                     className='me-2 cancel-button regular-body btn-transparent'>
                     { t('cancel') }

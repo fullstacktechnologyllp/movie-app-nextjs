@@ -80,40 +80,25 @@ function Signin() {
     }
 
   }
-  const validateEmail = (inputEmail: string) => {
+  const validateEmail = () => {
     const newErrors = { ...errors, email: '' };
-    if (!inputEmail || !inputEmail.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i)) {
+    if (!email || !email.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i)) {
       newErrors.email = t('errors.enter_valid_email_address');
     }
     setErrors(newErrors);
   };
 
-  const validatePassword = (inputPassword: string) => {
+  const validatePassword = () => {
     const newErrors = { ...errors, password: '' };
-    if (!inputPassword) {
+    if (!password) {
       newErrors.password = t('errors.enter_valid_password');
     }
     setErrors(newErrors);
   };
 
   return (
-    <div style={ {
-      backgroundImage: `url(${signinImage.src})`,
-      backgroundSize: '100%',
-      height: '100%',
-      minHeight: '100vh',
-      backgroundColor: '#093545',
-      backgroundRepeat: 'no-repeat',
-      backgroundPosition: 'bottom',
-    } }>
-      <div
-        style={ {
-          height: '100vh',
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-        } }
-      >
+    <div className='global-image-container'>
+      <div className='sign-in-wrapper'>
         { loading && (
           <div className='vh-100 d-flex justify-content-center align-items-center z-3 overlay'>
             <div className='spinner-container'>
@@ -121,19 +106,22 @@ function Signin() {
             </div>
           </div>
         ) }
-        <div>
+        <Container className='sign-in-container'>
           <Row className='justify-content-center text-white'>
-            <Col md={ 3 } className='sign-in-container'>
-              <h1 className='text-center text-sign-in'>{ t('signin') }</h1>
-              <Form onSubmit={ loginFormSubmit }>
+            <Col className='p-0'>
+              <h1 className='text-center text-sign-in mb-0'>{ t('signin') }</h1>
+              <Form onSubmit={ loginFormSubmit } className='justify-content-center d-grid'>
                 <Form.Group controlId="formBasicEmail" className='input-email'>
                   <Form.Control type="email"
                     className={ `custom-input custom-input-bg ${errors.email && 'is-invalid border-1 border-danger'}` }
                     placeholder={ t('email') }
                     onChange={ (e) => setEmail(e.target.value) }
-                    onBlur={ (e) => validateEmail(e.target.value) }
+                    onBlur={ (e) => validateEmail() }
+                    onMouseMove={ (e) => validateEmail() }
+                    onMouseLeave={ (e) => validateEmail() }
+                    onMouseOver={ (e) => validateEmail() }
                   />
-                  { errors.email && <div className="invalid-feedback">{ errors.email }</div> }
+                  { errors.email && <div className="invalid-feedback m-0">{ errors.email }</div> }
 
                 </Form.Group>
 
@@ -142,12 +130,15 @@ function Signin() {
                     className={ `custom-input custom-input-bg ${errors.password && 'is-invalid border-1 border-danger'}` }
                     placeholder={ t('password') }
                     onChange={ (e) => setPassword(e.target.value) }
-                    onBlur={ (e) => validatePassword(e.target.value) }
+                    onBlur={ (e) => validatePassword() }
+                    onMouseMove={ (e) => validatePassword() }
+                    onMouseLeave={ (e) => validatePassword() }
+                    onMouseOver={ (e) => validatePassword() }
                   />
-                  { errors.password && <div className="invalid-feedback">{ errors.password }</div> }
+                  { errors.password && <div className="invalid-feedback m-0">{ errors.password }</div> }
                 </Form.Group>
 
-                <Form.Group controlId="formBasicCheckbox" className='d-flex justify-content-center input-email remember-me-checkbox'>
+                <Form.Group controlId="formBasicCheckbox" className='d-flex justify-content-center bottom-24 remember-me-checkbox'>
                   <Form.Check type="checkbox" label={ t('remember_me') } />
                 </Form.Group>
 
@@ -157,7 +148,7 @@ function Signin() {
               </Form>
             </Col>
           </Row>
-        </div>
+        </Container>
       </div>
     </div>
   );

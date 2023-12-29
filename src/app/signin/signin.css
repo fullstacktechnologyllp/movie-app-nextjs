@@ -1,5 +1,8 @@
 .login-button {
   padding: 15px 126px;
+  max-width: 300px;
+  height: 54px;
+  margin-bottom: 109px !important;
 }
 
 .text-sign-in {
@@ -8,15 +11,31 @@
 
 .input-email {
   margin-bottom: 24px;
-  width: 300px;
+  min-width: 300px;
   height: 45px;
+}
+
+.bottom-24 {
+  margin-bottom: 24px;
 }
 
 .is-invalid {
   border: 1px solid #EB5757 !important;
 }
 
-.sign-in-container {
-  width: 300px;
-  height: 45px;
+
+@media (min-width:1440px) {
+  .sign-in-container {
+    max-width: 300px;
+    height: 360px;
+    margin-top: 220px;
+  }
+}
+
+.sign-in-wrapper {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
 }

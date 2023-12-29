@@ -33,7 +33,7 @@ const LanguageSwitcher: React.FC<LanguageSwitcherProps> = ({ className }) => {
 
   return (
     <Dropdown className={ className }>
-      <Dropdown.Toggle variant="secondary" id="languageDropdown" className='custom-input-bg' style={ { borderRadius: '12px' } }>
+      <Dropdown.Toggle variant="secondary" id="languageDropdown" className='custom-input-bg border-radius-12'>
         { selectedLanguage === 'en' ? 'English' : selectedLanguage === 'de' ? 'Deutsch' : 'Select Language' }
       </Dropdown.Toggle>
       <Dropdown.Menu>
