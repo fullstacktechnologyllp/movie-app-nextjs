@@ -4,18 +4,25 @@ import React, { useEffect, useState } from 'react';
 import { Form, Button, Container, Row, Col, Spinner } from 'react-bootstrap';
 import { useRouter } from 'next/navigation';
 import axios from '../services/api';
-import { appWithTranslation, useTranslation } from 'next-i18next';
+import { useTranslation } from 'next-i18next';
 import { toast } from 'react-toastify';
 import '../../i18n';
 import './signin.css';
+import signinImage from '../../assets/images/sign-in.jpg';
+import '../globals.css';
 
 function Signin() {
 
   useEffect(() => {
     const token = localStorage.getItem('token');
+    const selectedLanguage = localStorage.getItem('selectedLanguage');
+
     console.log(token);
     if (token !== null) {
       window.location.href = '/movies'
+    }
+    if (!selectedLanguage) {
+      localStorage.setItem('selectedLanguage', 'en');
     }
   }, []);
 
@@ -92,60 +99,70 @@ function Signin() {
   };
 
   return (
-    <div
-      style={ {
-        height: '100vh',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-      } }
-    >
-      { loading && (
-        <div className='vh-100 d-flex justify-content-center align-items-center z-3 overlay'>
-          <div className='spinner-container'>
-            <Spinner animation='border' variant='primary' />
+    <div style={ {
+      backgroundImage: `url(${signinImage.src})`,
+      backgroundSize: '100%',
+      height: '100%',
+      minHeight: '100vh',
+      backgroundColor: '#093545',
+      backgroundRepeat: 'no-repeat',
+      backgroundPosition: 'bottom',
+    } }>
+      <div
+        style={ {
+          height: '100vh',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+        } }
+      >
+        { loading && (
+          <div className='vh-100 d-flex justify-content-center align-items-center z-3 overlay'>
+            <div className='spinner-container'>
+              <Spinner animation='border' variant='primary' />
+            </div>
           </div>
-        </div>
-      ) }
-      <Container>
-        <Row className='justify-content-center text-white'>
-          <Col md={ 3 } className='p-3'>
-            <h1 className='text-center text-sign-in'>{ t('signin') }</h1>
-            <Form onSubmit={ loginFormSubmit }>
-              <Form.Group controlId="formBasicEmail" className='mb-3 input-email'>
-                <Form.Control type="email"
-                  className={ `custom-input custom-input-bg ${errors.email && 'is-invalid border-1 border-danger'}` }
-                  placeholder={ t('email') }
-                  onChange={ (e) => setEmail(e.target.value) }
-                  onBlur={ (e) => validateEmail(e.target.value) }
-                />
-                { errors.email && <div className="invalid-feedback">{ errors.email }</div> }
+        ) }
+        <Container>
+          <Row className='justify-content-center text-white'>
+            <Col md={ 3 } className='p-3'>
+              <h1 className='text-center text-sign-in'>{ t('signin') }</h1>
+              <Form onSubmit={ loginFormSubmit }>
+                <Form.Group controlId="formBasicEmail" className='mb-3 input-email'>
+                  <Form.Control type="email"
+                    className={ `custom-input custom-input-bg ${errors.email && 'is-invalid border-1 border-danger'}` }
+                    placeholder={ t('email') }
+                    onChange={ (e) => setEmail(e.target.value) }
+                    onBlur={ (e) => validateEmail(e.target.value) }
+                  />
+                  { errors.email && <div className="invalid-feedback">{ errors.email }</div> }
 
-              </Form.Group>
+                </Form.Group>
 
-              <Form.Group controlId="formBasicPassword" className='mb-3'>
-                <Form.Control type="password"
-                  className={ `custom-input custom-input-bg ${errors.password && 'is-invalid border-1 border-danger'}` }
-                  placeholder={ t('password') }
-                  onChange={ (e) => setPassword(e.target.value) }
-                  onBlur={ (e) => validatePassword(e.target.value) }
-                />
-                { errors.password && <div className="invalid-feedback">{ errors.password }</div> }
-              </Form.Group>
+                <Form.Group controlId="formBasicPassword" className='mb-3'>
+                  <Form.Control type="password"
+                    className={ `custom-input custom-input-bg ${errors.password && 'is-invalid border-1 border-danger'}` }
+                    placeholder={ t('password') }
+                    onChange={ (e) => setPassword(e.target.value) }
+                    onBlur={ (e) => validatePassword(e.target.value) }
+                  />
+                  { errors.password && <div className="invalid-feedback">{ errors.password }</div> }
+                </Form.Group>
 
-              <Form.Group controlId="formBasicCheckbox" className='d-flex justify-content-center mb-3 remember-me-checkbox'>
-                <Form.Check type="checkbox" label={ t('remember_me') } />
-              </Form.Group>
+                <Form.Group controlId="formBasicCheckbox" className='d-flex justify-content-center mb-3 remember-me-checkbox'>
+                  <Form.Check type="checkbox" label={ t('remember_me') } />
+                </Form.Group>
 
-              <Button variant="primary" type="submit" className='w-100 btn-primary-custom regular-body login-button' size='lg'>
-                { t('login') }
-              </Button>
-            </Form>
-          </Col>
-        </Row>
-      </Container>
+                <Button variant="primary" type="submit" className='w-100 btn-primary-custom regular-body login-button' size='lg'>
+                  { t('login') }
+                </Button>
+              </Form>
+            </Col>
+          </Row>
+        </Container>
+      </div>
     </div>
   );
 }
 
-export default appWithTranslation<any>(Signin);
+export default Signin;

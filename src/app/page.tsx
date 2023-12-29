@@ -13,17 +13,17 @@ export default function Home() {
     const token = localStorage.getItem('token');
     const selectedLanguage = localStorage.getItem('selectedLanguage');
 
-    if (token !== '') {
+    if (token !== '' || token !== null) {
       setLoggedIn(true);
       window.location.href = '/movies'
     }
     if (!selectedLanguage) {
-      localStorage.setItem('selectedLanguage','en');
+      localStorage.setItem('selectedLanguage', 'en');
     }
   }, []);
 
   return (<>
-    { !isLoggedIn ? <><Signin /></> : <><Movies /></> }
 
+    { !isLoggedIn ? <><Signin /></> : <><Movies /></> }
   </>)
 }
