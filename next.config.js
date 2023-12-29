@@ -15,6 +15,7 @@ const nextConfig = {
     // Note: subdomains must be included in the domain value to be matched e.g. "de.example.com".
 
   },
+  output: 'standalone',
   crossOrigin: 'anonymous',
   async headers () {
     return [
