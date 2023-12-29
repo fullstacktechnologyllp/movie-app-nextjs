@@ -21,6 +21,7 @@ const LanguageSwitcher: React.FC<LanguageSwitcherProps> = ({ className }) => {
     if (selectedLanguage) {
       changeLanguage(selectedLanguage);
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {

@@ -83,6 +83,7 @@ export default function MovieForm() {
 
       fetchMovieDetails();
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ isUpdate ]);
 
   useEffect(() => {
@@ -182,7 +183,7 @@ export default function MovieForm() {
               <Form.Group controlId="movieName">
                 <Form.Control type="text" placeholder={ t('title') } value={ movieName }
                   className={ `mb-3 ${isMobile ? 'w-100' : 'w-75'} custom-input ${errors.movieName && 'is-invalid border-1 border-danger'}` }
-                  onChange={ (event) => setMovieName(event.target.value) } />
+                  onChange={ (event:any) => setMovieName(event.target.value) } />
                 { errors.movieName && <div className="invalid-feedback d-block mt--2">{ errors.movieName }</div> }
 
               </Form.Group>

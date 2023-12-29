@@ -116,8 +116,8 @@ function Signin() {
                 <Form.Control type="email"
                   className={ `custom-input custom-input-bg ${errors.email && 'is-invalid border-1 border-danger'}` }
                   placeholder={ t('email') }
-                  onChange={ (e) => validateEmail(e.target.value) }
-                  onBlur={ (e) => setEmail(e.target.value) }
+                  onChange={ (e) => setEmail(e.target.value) }
+                  onBlur={ (e) => validateEmail(e.target.value) }
                 />
                 { errors.email && <div className="invalid-feedback">{ errors.email }</div> }
 
@@ -127,8 +127,8 @@ function Signin() {
                 <Form.Control type="password"
                   className={ `custom-input custom-input-bg ${errors.password && 'is-invalid border-1 border-danger'}` }
                   placeholder={ t('password') }
-                  onChange={ (e) => validatePassword(e.target.value) }
-                  onBlur={ (e) => setPassword(e.target.value) }
+                  onChange={ (e) => setPassword(e.target.value) }
+                  onBlur={ (e) => validatePassword(e.target.value) }
                 />
                 { errors.password && <div className="invalid-feedback">{ errors.password }</div> }
               </Form.Group>
