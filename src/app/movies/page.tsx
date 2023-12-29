@@ -83,7 +83,7 @@ export default function Movies() {
               </div>
             </div>
           </div>
-          <Row xs={ 2 } md={ 4 } className="g-4">
+          <Row xs={ 2 } md={2} lg={ 4 } className="g-custom">
             { currentPageCards.map((card: any, index) =>
               <Col key={ index }>
                 <CustomCard { ...card } />
@@ -92,10 +92,10 @@ export default function Movies() {
           </Row>
           <Container className='d-flex justify-content-center my-5 py-5'>
             <Pagination className='custom-pagination py-5'>
-              <Pagination.Prev onClick={ () => handlePageChange(page - 1) } disabled={ page === 1 }>{ t('prev') }</Pagination.Prev>
+              <Pagination.Prev onClick={ () => handlePageChange(page - 1) } disabled={ page === 1 } className='prev'>{ t('prev') }</Pagination.Prev>
               { Array.from({ length: totalPages }, (_, index) => index + 1).map((number) =>
                 <Pagination.Item key={ number } active={ number === page } onClick={ () => handlePageChange(number) }>{ number }</Pagination.Item>) }
-              <Pagination.Next onClick={ () => handlePageChange(page + 1) } disabled={ page === totalPages }>{ t('next') }</Pagination.Next>
+              <Pagination.Next onClick={ () => handlePageChange(page + 1) } disabled={ page === totalPages } className='next'>{ t('next') }</Pagination.Next>
             </Pagination>
           </Container>
         </Container>

@@ -199,7 +199,7 @@ export default function MovieForm() {
                 { errors.selectedYear && <div className="invalid-feedback d-block">{ errors.selectedYear }</div> }
 
               </Form.Group>
-              <div className="mb-2">
+              <div className={`mb-2 ${isMobile ? 'd-flex justify-content-between' : ''}`}>
                 <Button variant="primary" onClick={ () => router.push('/movies') } type="button"
                   className='me-2 me-lg-3 btn btn-md regular-body btn-transparent'>
                   { t('cancel') }
