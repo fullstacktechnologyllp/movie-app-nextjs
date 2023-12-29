@@ -2,6 +2,7 @@
 
 const nextConfig = {
   reactStrictMode: false,
+  optimizeFonts: false,
   i18n: {
     // These are all the locales you want to support in
     // your application
@@ -14,6 +15,21 @@ const nextConfig = {
     // Note: subdomains must be included in the domain value to be matched e.g. "de.example.com".
 
   },
+  crossOrigin: 'anonymous',
+  async headers () {
+    return [
+      {
+        // matching all API routes
+        source: "/api/:path*",
+        headers: [
+          { key: "Access-Control-Allow-Credentials", value: "true" },
+          { key: "Access-Control-Allow-Origin", value: "*" }, // replace this your actual origin
+          { key: "Access-Control-Allow-Methods", value: "GET,DELETE,PATCH,POST,PUT" },
+          { key: "Access-Control-Allow-Headers", value: "X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version" },
+        ]
+      }
+    ];
+  }
 
 };
 
