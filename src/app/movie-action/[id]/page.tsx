@@ -110,7 +110,6 @@ export default function MovieForm() {
     event.preventDefault();
     try {
       const formIsValid = validateForm();
-      console.log(errors)
       if (!formIsValid) {
         return;
       }

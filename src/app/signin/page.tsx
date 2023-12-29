@@ -17,7 +17,6 @@ function Signin() {
     const token = localStorage.getItem('token');
     const selectedLanguage = localStorage.getItem('selectedLanguage');
 
-    console.log(token);
     if (token !== null) {
       window.location.href = '/movies'
     }
@@ -41,7 +40,6 @@ function Signin() {
 
   const validateForm = () => {
     let valid = true;
-    console.log(password);
     const newErrors = { email: '', password: '' };
 
     // Email validation
