@@ -71,8 +71,8 @@ export default function Movies() {
             <Container>
               <Row className='justify-content-center text-white'>
                 <Col md={ 6 } className='p-4 rounded'>
-                  <h3 className='text-center mb-4'>{ t('movie_list_is_empty') }</h3>
-                  <Button onClick={ () => router.push('/movie-action/0') } variant="primary" type="button" className='d-flex m-auto btn-primary-custom py-3 px-4 regular-body'>
+                  <h2 className='text-center empty-title'>{ t('movie_list_is_empty') }</h2>
+                  <Button onClick={ () => router.push('/movie-action/0') } variant="primary" type="button" className='d-flex add-movie-button m-auto btn-primary-custom py-3 px-4 regular-body'>
                     { t('add_new_movie') }
                   </Button>
                 </Col>
@@ -80,9 +80,9 @@ export default function Movies() {
             </Container>
           </div>
         ) : (
-          <Container className='pt-5 text-white pb-5'>
-            <div className="d-flex flex-column flex-sm-row justify-content-between align-items-center pt-5 mb-3 mb-sm-5">
-              <h2 className="mb-3 mb-sm-0">{ t('my_movies') }
+          <div className='text-white'>
+            <div className="movie-head d-flex flex-column flex-sm-row justify-content-between align-items-center">
+              <h2 className="">{ t('my_movies') }
                 <Image src={ plus } alt='add movies' width={ 32 } className='ms-3 cursor-pointer' onClick={ () => router.push('/movie-action/0') } />
               </h2>
               <div className='d-flex'>
@@ -94,22 +94,22 @@ export default function Movies() {
                 </div>
               </div>
             </div>
-            <Row xs={ 2 } md={ 2 } lg={ 4 } className="g-custom">
+            <Row xs={ 2 } md={ 2 } lg={ 4 } className="g-custom custom-spacing">
               { currentPageCards.map((card: any, index) =>
-                <Col key={ index }>
+                <Col key={ index } className='movie-col'>
                   <CustomCard { ...card } />
                 </Col>
               ) }
             </Row>
-            <Container className='d-flex justify-content-center my-5 py-5'>
-              <Pagination className='custom-pagination py-5'>
+            <Container className='d-flex justify-content-center pagination-padding'>
+              <Pagination className='custom-pagination'>
                 <Pagination.Prev onClick={ () => handlePageChange(page - 1) } disabled={ page === 1 } className='prev'>{ t('prev') }</Pagination.Prev>
                 { Array.from({ length: totalPages }, (_, index) => index + 1).map((number) =>
                   <Pagination.Item key={ number } active={ number === page } onClick={ () => handlePageChange(number) }>{ number }</Pagination.Item>) }
                 <Pagination.Next onClick={ () => handlePageChange(page + 1) } disabled={ page === totalPages } className='next'>{ t('next') }</Pagination.Next>
               </Pagination>
             </Container>
-          </Container>
+          </div>
         ) }
       </div>
     </>

@@ -8,8 +8,15 @@
 
 .input-email {
   margin-bottom: 24px;
+  width: 300px;
+  height: 45px;
 }
 
 .is-invalid {
   border: 1px solid #EB5757 !important;
+}
+
+.sign-in-container {
+  width: 300px;
+  height: 45px;
 }

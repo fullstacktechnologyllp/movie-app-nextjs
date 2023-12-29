@@ -121,12 +121,12 @@ function Signin() {
             </div>
           </div>
         ) }
-        <Container>
+        <div>
           <Row className='justify-content-center text-white'>
-            <Col md={ 3 } className='p-3'>
+            <Col md={ 3 } className='sign-in-container'>
               <h1 className='text-center text-sign-in'>{ t('signin') }</h1>
               <Form onSubmit={ loginFormSubmit }>
-                <Form.Group controlId="formBasicEmail" className='mb-3 input-email'>
+                <Form.Group controlId="formBasicEmail" className='input-email'>
                   <Form.Control type="email"
                     className={ `custom-input custom-input-bg ${errors.email && 'is-invalid border-1 border-danger'}` }
                     placeholder={ t('email') }
@@ -137,7 +137,7 @@ function Signin() {
 
                 </Form.Group>
 
-                <Form.Group controlId="formBasicPassword" className='mb-3'>
+                <Form.Group controlId="formBasicPassword" className='input-email'>
                   <Form.Control type="password"
                     className={ `custom-input custom-input-bg ${errors.password && 'is-invalid border-1 border-danger'}` }
                     placeholder={ t('password') }
@@ -147,7 +147,7 @@ function Signin() {
                   { errors.password && <div className="invalid-feedback">{ errors.password }</div> }
                 </Form.Group>
 
-                <Form.Group controlId="formBasicCheckbox" className='d-flex justify-content-center mb-3 remember-me-checkbox'>
+                <Form.Group controlId="formBasicCheckbox" className='d-flex justify-content-center input-email remember-me-checkbox'>
                   <Form.Check type="checkbox" label={ t('remember_me') } />
                 </Form.Group>
 
@@ -157,7 +157,7 @@ function Signin() {
               </Form>
             </Col>
           </Row>
-        </Container>
+        </div>
       </div>
     </div>
   );

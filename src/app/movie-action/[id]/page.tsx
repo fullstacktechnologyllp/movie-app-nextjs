@@ -40,6 +40,8 @@ export default function MovieForm() {
     // maxHeight: '400px',
     width: '100%',
     height: '100%',
+    maxWidth:'473px',
+    maxHeight:'504px',
     borderRadius: '12px'
   };
 
@@ -106,6 +108,7 @@ export default function MovieForm() {
     return Object.values(newErrors).every((error) => error === '');
   };
 
+
   const movieUpsert = async (event: any) => {
     event.preventDefault();
     try {
@@ -142,6 +145,46 @@ export default function MovieForm() {
     }
   }
 
+  const validateMovieName = () => {
+    let isValid = true;
+    const newErrors = { ...errors, movieName: '' };
+
+    if (!movieName.trim()) {
+      newErrors.movieName = t('errors.MOVIE_TITLE_IS_REQUIRED');
+      isValid = false;
+    }
+
+    setErrors(newErrors);
+    return isValid;
+  };
+
+  const validateSelectedYear = () => {
+    let isValid = true;
+    const newErrors = { ...errors, selectedYear: '' };
+
+    if (!selectedYear) {
+      newErrors.selectedYear = t('errors.MOVIE_PUBLISH_YEAR_IS_REQUIRED');
+      isValid = false;
+    }
+
+    setErrors(newErrors);
+    return isValid;
+  };
+
+  const validatePoster = () => {
+    let isValid = true;
+    const newErrors = { ...errors, poster: '' };
+
+    if (!isUpdate && !uploadFile) {
+      newErrors.poster = t('errors.MOVIE_POSTER_IS_REQUIRED');
+      isValid = false;
+    }
+
+    setErrors(newErrors);
+    return isValid;
+  };
+
+
   return (
     <>
       <div style={ {
@@ -160,13 +203,13 @@ export default function MovieForm() {
             </div>
           </div>
         ) }
-        <Container className='pt-5 text-white'>
-          <div className="text-left pt-5 mb-5">
+        <div className='text-white custom-container-space'>
+          <div className="text-left">
             <span className={ `text-white ${isMobile ? 'h3' : 'h2'}` }>{ !isUpdate ? t('create_movie') : t('edit') } </span>
           </div>
-          <Form onSubmit={ movieUpsert }>
-            <Row className=''>
-              <Col md={ 4 }>
+          <Form onSubmit={ movieUpsert } className='form-space'>
+            <Row className='g-0'>
+              <Col md={ 6 } >
                 <div className="position-relative upload-box">
                   <input
                     type="file"
@@ -187,25 +230,25 @@ export default function MovieForm() {
                 </div>
 
               </Col>
-              <Col md={ 1 }>
-              </Col>
-              <Col md={ 6 } className='mt-4 mt-lg-0'>
+              {/* <Col md={ 2 } className='p-0 m-0'>
+              </Col> */}
+              <Col md={ 6 } className=''>
                 <Form.Group controlId="movieName">
                   <Form.Control type="text" placeholder={ t('title') } value={ movieName }
-                    className={ `mb-3 ${isMobile ? 'w-100' : 'w-75'} custom-input ${errors.movieName && 'is-invalid'}` }
+                    className={ `bottom-24 ${isMobile ? 'w-100' : ''} movie-title custom-input ${errors.movieName && 'is-invalid'}` }
                     onChange={ (event: any) => setMovieName(event.target.value) }
-                    onBlur={ (event: any) => validateForm() }
-                     />
+                    onBlur={ (event: any) => validateMovieName() }
+                  />
                   { errors.movieName && <div className="invalid-feedback d-block mt--2">{ errors.movieName }</div> }
 
                 </Form.Group>
-                <Form.Group controlId="publishYear" className='mb-5'>
+                <Form.Group controlId="publishYear" className=''>
                   <DatePicker
                     selected={ selectedYear }
                     onChange={ (date: Date | null) => setSelectedYear(date) }
-                    onBlur={ (event: any) => validateForm() }
-                    className={ `form-control ${errors.selectedYear && 'is-invalid'}` }
-                    wrapperClassName={ `${isMobile ? 'w-100' : 'w-50'}` }
+                    onBlur={ (event: any) => validateSelectedYear() }
+                    className={ `form-control publish-year bottom-24 ${errors.selectedYear && 'is-invalid'}` }
+                    wrapperClassName={ `${isMobile ? 'w-100' : ''}` }
                     dateFormat="yyyy"
                     showYearPicker
                     placeholderText={ t('publish_year') }
@@ -213,12 +256,12 @@ export default function MovieForm() {
                   { errors.selectedYear && <div className="invalid-feedback d-block">{ errors.selectedYear }</div> }
 
                 </Form.Group>
-                <div className={ `mb-2 ${isMobile ? 'd-flex justify-content-between' : ''}` }>
+                <div className={ `${isMobile ? 'd-flex justify-content-between' : ''}` }>
                   <Button variant="primary" onClick={ () => router.push('/movies') } type="button"
-                    className='me-2 me-lg-3 btn btn-md regular-body btn-transparent'>
+                    className='me-2 cancel-button regular-body btn-transparent'>
                     { t('cancel') }
                   </Button>
-                  <Button className='btn-primary-custom btn btn-md regular-body' type="submit">
+                  <Button className='btn-primary-custom submit-button regular-body' type="submit">
                     { t('submit') }
                   </Button>
                 </div>
@@ -226,7 +269,7 @@ export default function MovieForm() {
             </Row>
           </Form>
 
-        </Container>
+        </div>
       </div>
     </>
   );

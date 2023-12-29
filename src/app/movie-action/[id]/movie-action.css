@@ -3,8 +3,10 @@
   max-width: 373px;
   min-height: 404px;
   max-height: 404px; */
-  width: 373px;
-  height: 400px;
+  min-width: 473px;
+  min-height: 504px;
+  max-width: 473px;
+  max-height: 504px;
   border-radius: 10px;
   border: 2px dotted #FFFFFF;
 }
@@ -27,4 +29,48 @@
 
 .is-invalid {
   border: 1px solid #EB5757 !important;
+}
+
+.custom-container-space {
+  padding: 120px;
+}
+
+.form-space {
+  padding: 120px 0;
+}
+
+.bottom-24 {
+  margin-bottom: 24px;
+}
+
+@media (min-width: 1250px) {
+  .movie-title {
+    width: 362px;
+    height: 45px;
+    border-radius: 10px;
+
+  }
+
+  .publish-year {
+    width: 216px;
+    height: 45px;
+    margin-bottom: 64px;
+  }
+
+  .cancel-button {
+    width: 167px;
+    height: 56px;
+    padding: 16px 55px;
+    justify-content: center;
+    align-items: center;
+    margin-right: 16px !important;
+  }
+
+  .submit-button {
+    width: 179px;
+    height: 56px;
+    padding: 16px 59px;
+    justify-content: center;
+    align-items: center;
+  }
 }
