@@ -20,12 +20,14 @@
 - Email: `test.gkyb+1@gmail.com`
 - Password: `123456789Aa#`
 
-
 ## Features
-- Form validation
+- Form validation with error message
 - Movie list pagination
 - State management
 - Localization Available for English and German. Default `English`
 - Spinner (Loader)
 - Success and Error toast message
 - Mobile Friendly
+
+## Images
+![Movie App](./src/assets/images/movie-app.gif)
